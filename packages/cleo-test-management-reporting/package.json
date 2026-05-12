@@ -1,0 +1,17 @@
+{
+  "name": "cleo-test-management-reporting",
+  "version": "0.1.0",
+  "type": "module",
+  "bin": {
+    "cleo": "dist/cli/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "npm run build && node dist/cli/index.js",
+    "start": "node dist/cli/index.js"
+  },
+  "dependencies": {
+    "commander": "^11.0.0",
+    "cleo-cypress-codemod": "*"
+  }
+}
