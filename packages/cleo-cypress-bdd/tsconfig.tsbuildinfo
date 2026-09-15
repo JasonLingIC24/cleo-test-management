@@ -1,0 +1,1 @@
+{"root":["./src/index.ts","./src/specParser/parseScenarios.ts","./src/specParser/parseSpec.ts","./src/specParser/parseThens.ts","./src/specParser/parseWhens.ts","./src/specParser/types.ts","./src/specParser/ast/getDescribeTitle.ts","./src/specParser/ast/getLocation.ts","./src/specParser/ast/getTagsFromDescribe.ts","./src/specParser/ast/getTopLevelDescribes.ts"],"version":"6.0.3"}

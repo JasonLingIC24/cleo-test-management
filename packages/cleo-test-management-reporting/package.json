@@ -1,17 +1,15 @@
 {
   "name": "cleo-test-management-reporting",
   "version": "0.1.0",
+  "private": true,
   "type": "module",
-  "bin": {
-    "cleo": "dist/cli/index.js"
+  "dependencies": {
+    "cleo-cypress-bdd": "*",
+    "cleo-test-management": "*",
+    "cleo-test-generator": "*"
   },
   "scripts": {
-    "build": "tsc",
-    "dev": "npm run build && node dist/cli/index.js",
-    "start": "node dist/cli/index.js"
-  },
-  "dependencies": {
-    "commander": "^11.0.0",
-    "cleo-cypress-codemod": "*"
+  "build": "tsc",
+    "cleo": "node dist/cli/main.js"
   }
 }

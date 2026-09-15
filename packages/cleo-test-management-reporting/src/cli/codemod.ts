@@ -3,13 +3,23 @@ import fs from "fs";
 import path from "path";
 
 import { runCodemod, type CodemodResult } from "cleo-cypress-codemod";
-import { resolveFiles } from "./utils/resolveFiles.js";
+import { resolveFiles } from "../utils/resolveFiles.js";
 import { formatCliSummary } from "./formatCliSummary.js";
+
+type CliOptions = {
+  input: string;
+  domainRoot: string;
+  outDir?: string;
+  dryRun?: boolean;
+  write?: boolean;
+  failOnNestedTags?: boolean; // ✅ FIX
+};
+
 
 /**
  * Registers the `codemod` command and its subcommands.
  */
-export function registerCodemodCommand(program: Command): void {
+function registerCodemodCommand(program: Command): void {
   const codemod = program
     .command("codemod")
     .description("Cypress codemod commands");
@@ -21,8 +31,11 @@ export function registerCodemodCommand(program: Command): void {
     .option("--domain-root <path>", "Domain root directory", "cypress/e2e")
     .option("--dry-run", "Do not write files", false)
     .option("--write", "Write changes to files in place", false)
-    .option("--out-dir <path>", "Write all files to an output directory")
-    .action(async (opts) => {
+    .option("--output <path>", "Write all files to an output directory")
+    .option("--fail-on-nested-tags", "Fail if nested tags are present", false)
+    .action(async (opts: CliOptions) => {
+
+
       // ─────────────────────────────────────────────
       // Validation
       // ─────────────────────────────────────────────
@@ -51,9 +64,12 @@ export function registerCodemodCommand(program: Command): void {
         ensureFeatureWrapper: true,
         moveTopLevelTags: true,
         addDomainTags: true,
+        removeNestedTags: true,
+        failOnNestedTags: opts.failOnNestedTags, // ✅ correct place
         domainRoot: opts.domainRoot,
         dryRun: opts.dryRun,
       });
+
 
       // ─────────────────────────────────────────────
       // Output handling

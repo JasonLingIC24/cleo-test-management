@@ -1,0 +1,62 @@
+{
+  "manualRequired": false,
+  "input": {
+    "specs": "./input/cypress/tests"
+  },
+  "paths": {
+    "assets": {
+      "templates": "./assets/templates",
+      "manual": "./assets/elevate-master-manual-test-scripts.xlsx"
+    }
+  },
+  "testResults": {
+    "frontend": "./testResults/frontend",
+    "backend": "./testResults/backend",
+    "cypress": "./testResults/cypress",
+    "manual": "./testResults/manual",
+    "automated": "./testResults/automated",
+    "github": "./testResults/github"
+  },
+  "reports": {
+    "root": "./reports",
+    "docs": "./reports/docs"
+  },
+  "templates": {
+    "releaseNotes": "release-notes-template.docx",
+    "summaryReport": "test-summary-report-template-LIVE.docx"
+  },
+  "product": {
+    "name": "Elevate",
+    "logo": "cleo-logo.png"
+  },
+  "release": {
+    "version": "26.14.0",
+    "environment": "Staging",
+    "release": "R1",
+    "buildNumber": "2026.08.17.001"
+  },
+  "testing": {
+    "historicBugWindowDays": 365,
+    "releaseStartDate": "2026-08-17",
+    "releaseEndDate": "2026-08-31",
+    "featuresNotTested": ["BaRS", "CPIS", "ECDS"]
+  },
+  "owners": {
+    "productOwner": "Susan Spriggs",
+    "director": "Karen Ventura",
+    "architect": "Stuff Netherton",
+    "qaTeam": "Quality Assurance",
+    "author": "QA Team"
+  },
+  "jira": {
+    "baseUrl": "https://cleosystems.atlassian.net/",
+    "email": "jason.ling@ic24.nhs.uk",
+    "token": "ATATT3xFfGF0JTdXmaVnSp2EFq14oM8NbuDoNdjYi99CLp3OxK7_OgaHoMRzwpuep-pincBOHTRPrI85vmHs6NSogMCTg6IJlTpPHYJElCH-b0isy8r0eBOrQDCbd9zqu2ncrrp2_xzmQxOWe0V5Ron7yjUJW4ZLb_JaKVJKo5-yyvp4FUY4T4o=A6FEF42C",
+    "projectKey": "EVA",
+    "boardId": 448
+  },
+  "github": {
+    "owner": "Cleo-Systems",
+    "repo": "elevate-monorepo"
+  }
+}

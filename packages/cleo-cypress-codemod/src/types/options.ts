@@ -35,4 +35,8 @@ export interface CodemodOptions {
    * When true, AST is updated in memory but files are not written.
    */
   dryRun?: boolean;
+
+  removeNestedTags?: boolean;
+
+  failOnNestedTags?: boolean; // ✅ FIX
 }

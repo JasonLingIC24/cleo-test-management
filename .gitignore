@@ -1,5 +1,17 @@
 # ------------------------------
-# ------------------------------# Node / npm
+# ------------------------------
+# Gherkin Tools - Test Management Reporting
+# ------------------------------
+# Input and Output files for the reporting tool, including generated reports, logs, and local environment files.
+# ------------------------------
+input/
+output/
+reports/
+testResults/
+nhs-pathways/
+# ------------------------------
+# Node / npm
+# ------------------------------
 node_modules/
 npm-debug.log*
 yarn-debug.log*
@@ -31,7 +43,7 @@ cleo-codemod-report*.json
 
 # output directory mode (example)
 out/
-artifacts/
+test-assets/
 
 # ------------------------------
 # Local environment files

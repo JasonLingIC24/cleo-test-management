@@ -1,0 +1,10 @@
+i need to create a command line action that will retrieve the information from jira tickets in a specific release.
+this information will then be used to create feature files and test cases
+
+
+The Master Prompt Template
+
+Act as an expert QA Engineer.
+
+ Analyze the attached Jira User Story and its Acceptance Criteria. Generate a comprehensive set of structured manual test cases that cover the "happy path," alternative flows, negative testing, and edge cases.For each test case, provide the following details:Test Case ID: (e.g., TC001)Title: (A clear, concise name of what is being tested)Description/Objective: (A brief explanation of the test)Preconditions: (Conditions that must be met before starting)Test Steps: (Numbered step-by-step actions)Test Data: (Specific inputs, if applicable)Expected Result: (The exact, observable system behavior)Type: (Functional, UI, Edge Case, Security, etc.)Strictly follow the user story's requirements. Do not make assumptions about system behavior not mentioned in the ticket.4 Tips for Better AI PromptsDefine the Test Scope: If you only want basic validation, tell the AI to focus on acceptance criteria. If you need extensive coverage, explicitly prompt the AI to: "Brainstorm boundary values, missing fields, and error handling scenarios."Standardize Your Format: If you use a specific Test Management tool in Jira (like Xray or Zephyr), ask the AI to format the output into a Markdown table or CSV format so it can be easily copied or uploaded.Include the "System Environment": Provide the AI with context about your application (e.g., "The application is a web app optimized for Chrome," or "The backend is a REST API") so it generates relevant test steps.Iterate & Refine: If the AI misses the mark or invents features, correct it directly. For example: "Good, but exclude API tests, as those are handled separately. Focus only on UI validation."
+

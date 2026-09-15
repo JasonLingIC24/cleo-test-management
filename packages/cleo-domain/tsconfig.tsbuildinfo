@@ -1,0 +1,1 @@
+{"root":["./src/index.ts","./src/adapters/bddToTestEntities.ts","./src/domain/entities.ts","./src/ingestion/ingestCypressSpec.ts"],"errors":true,"version":"6.0.3"}

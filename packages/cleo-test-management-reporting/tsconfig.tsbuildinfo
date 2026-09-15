@@ -1,0 +1,1 @@
+{"root":["./src/cli/codemod.ts","./src/cli/formatCliSummary.ts","./src/cli/index.ts","./src/cli/utils/resolveFiles.ts"],"version":"6.0.3"}

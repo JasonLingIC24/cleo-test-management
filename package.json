@@ -1,21 +1,41 @@
 {
-  "name": "cleo-test-management",
   "private": true,
   "workspaces": [
     "packages/*"
   ],
-  
-"scripts": {
-    "build": "npm run build -w cleo-cypress-codemod && npm run build -w cleo-test-management-reporting",
-
-    "codemod": "npm run build && node packages/cleo-test-management-reporting/dist/cli/index.js codemod run"
-  }
-,
   "devDependencies": {
-    "@types/node": "^25.7.0",
+    "@types/adm-zip": "^0.5.8",
+    "@types/commander": "^2.12.0",
+    "@types/jsdom": "^28.0.3",
+    "@types/node": "^25.9.3",
+    "prettier": "^3.9.4",
     "typescript": "^6.0.3"
   },
   "dependencies": {
-    "commander": "^14.0.3"
+    "@octokit/rest": "^22.0.1",
+    "adm-zip": "^0.5.18",
+    "cli-progress": "^3.12.0",
+    "commander": "^14.0.3",
+    "docx": "^9.7.1",
+    "docx-templates": "^4.15.0",
+    "docxtemplater": "^3.68.7",
+    "dotenv": "^17.4.2",
+    "exceljs": "^4.4.0",
+    "form-data": "^4.0.6",
+    "jsdom": "^29.1.1",
+    "node-fetch": "^3.3.2",
+    "p-limit": "^7.3.0",
+    "pizzip": "^3.2.0"
+  },
+  "scripts": {
+    "build": "npm run build --workspaces",
+    "cleo": "node packages/cleo-test-management-reporting/dist/cli/main.js",
+    "lint": "npm run eslint:check && npm run prettier:check",
+    "lint-strict": "npm run eslint:check-strict && npm run prettier:check",
+    "eslint:check": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "eslint:check-strict": "eslint --max-warnings=0 . --ext .js,.jsx,.ts,.tsx",
+    "eslint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
+    "prettier:check": "prettier \"**/*.{ts,tsx,html,json,md,js}\" -c",
+    "prettier:fix": "prettier \"**/*.{ts,tsx,html,json,md,js}\" -c --write"
   }
 }

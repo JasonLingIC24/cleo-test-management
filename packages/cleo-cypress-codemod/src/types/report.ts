@@ -83,6 +83,8 @@ export interface CodemodFileReport {
   };
 
   diagnostics: CodemodDiagnostic[];
+  warnings?: string[];
+  violations?: string[];
 }
 
 /* ───────────────────────────────────────────── */

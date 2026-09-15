@@ -45,8 +45,5 @@ export function deriveDomainTags(
 /* ───────────────────────────────────────── */
 
 function normalizeSegment(segment: string): string {
-  return segment
-    .toLowerCase()
-    .replace(/\s+/g, "-")
-    .replace(/_/g, "-");
+  return segment.toLowerCase().replace(/\s+/g, "-").replace(/_/g, "-");
 }

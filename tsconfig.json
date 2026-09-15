@@ -1,0 +1,8 @@
+{
+  "files": [],
+  "references": [
+    { "path": "packages/cleo-cypress-codemod" },
+    { "path": "packages/cleo-cypress-bdd" },
+    { "path": "packages/cleo-test-management-reporting" }
+  ]
+}
