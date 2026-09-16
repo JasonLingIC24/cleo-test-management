@@ -1,5 +1,4 @@
 import type { PipelineCommandOptions } from "../models/pipelineCommandOptions.js";
-
 import type { PipelineExecutionOptions } from "../models/pipelineExecutionOptions.js";
 
 export function buildPipelineExecutionOptions(
@@ -12,11 +11,9 @@ export function buildPipelineExecutionOptions(
 
   return {
     version: commandOptions.version,
-
+    runId: commandOptions.runId ? Number(commandOptions.runId) : undefined,
     publish: commandOptions.publish,
-
     jiraKey: commandOptions.jira,
-
     releaseKeys:
       releaseKeys && releaseKeys.length > 0 ? releaseKeys : undefined,
   };

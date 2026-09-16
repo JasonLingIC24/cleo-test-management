@@ -4,6 +4,7 @@ export interface PipelineCommandOptions {
   phase3?: boolean;
   all?: boolean;
   version?: string;
+  runId?: string;
   jira?: string;
   releaseKeys?: string;
   publish?: boolean;

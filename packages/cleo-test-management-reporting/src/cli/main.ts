@@ -9,6 +9,7 @@ import { registerResultsCommands } from "../commands/resultsCommands.js";
 import { registerTransformCommands } from "../commands/transformCommands.js";
 import { registerCodemodCommands } from "../commands/codemodCommands.js";
 import { registerPipelineCommands } from "../commands/pipelineCommands.js";
+import { registerAcquireResultsCommands } from "../commands/acquireResultsCommands.js";
 
 const program = new Command();
 
@@ -31,6 +32,7 @@ registerResultsCommands(program);
 registerTransformCommands(program);
 registerCodemodCommands(program);
 registerPipelineCommands(program);
+registerAcquireResultsCommands(program);
 
 /* ============================================================
    PIPELINE COMMAND - Run full pipeline with one command
