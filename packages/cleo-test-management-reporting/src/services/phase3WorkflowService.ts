@@ -33,6 +33,8 @@ export async function runPhase3Workflow(
   ========================= */
 
   if (runtimeContext.releaseKeys?.length) {
+    console.log("📄 Generating Release Notes (release keys)...");
+
     await generateReleaseNotesFromKeys(runtimeContext.releaseKeys.join(","));
   } else {
     console.log("📄 Generating Release Notes (version)...");
@@ -78,7 +80,9 @@ export async function runPhase3Workflow(
      BUNDLE
   ========================= */
 
-  await buildReleaseBundle();
+  const bundlePath = await buildReleaseBundle(runtimeContext);
+
+  console.log(`📦 Release bundle created: ${bundlePath}`);
 }
 
 function cleanDirectory(dir: string) {
