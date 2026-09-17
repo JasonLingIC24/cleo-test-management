@@ -1,9 +1,11 @@
 import { Octokit } from "@octokit/rest";
 import fs from "fs";
 import path from "path";
-import { GithubConfig, WorkflowArtifact } from "../types/github.js";
-import { configAccess } from "./configAccessService.js";
 import AdmZip from "adm-zip";
+
+import { GithubConfig, WorkflowArtifact } from "../types/github.js";
+
+import { configAccess } from "./configAccessService.js";
 
 export class GithubArtifactService {
   private readonly octokit: Octokit;
@@ -46,7 +48,9 @@ export class GithubArtifactService {
       archive_format: "zip",
     });
 
-    fs.mkdirSync(outputDir, { recursive: true });
+    fs.mkdirSync(outputDir, {
+      recursive: true,
+    });
 
     const zipPath = path.join(outputDir, `${name}.zip`);
 
@@ -61,19 +65,24 @@ export class GithubArtifactService {
   ): Promise<string[]> {
     const artifacts = await this.listArtifacts(runId);
 
+    console.log(`📦 Found ${artifacts.length} artifact(s)`);
+
     const files: string[] = [];
 
     for (const [index, artifact] of artifacts.entries()) {
+      const progress = `[${index + 1}/${artifacts.length}]`;
+
       if (artifact.expired) {
         console.log(
-          `[${index + 1}/${artifacts.length}] Skipping expired artifact: ${artifact.name}`,
+          `${progress} ⚠️ Skipping expired artifact: ${artifact.name}`,
         );
+
         continue;
       }
 
-      console.log(
-        `[${index + 1}/${artifacts.length}] Downloading: ${artifact.name}`,
-      );
+      const sizeMb = (artifact.sizeInBytes / 1024 / 1024).toFixed(2);
+
+      console.log(`${progress} ⬇️ Downloading ${artifact.name} (${sizeMb} MB)`);
 
       const file = await this.downloadArtifact(
         artifact.id,
@@ -82,6 +91,8 @@ export class GithubArtifactService {
       );
 
       files.push(file);
+
+      console.log(`${progress} ✅ Downloaded ${artifact.name}`);
     }
 
     return files;
@@ -95,26 +106,47 @@ export class GithubArtifactService {
 
     const extracted: string[] = [];
 
-    for (const zipPath of downloads) {
+    for (const [index, zipPath] of downloads.entries()) {
+      const progress = `[${index + 1}/${downloads.length}]`;
+
       const extractDir = zipPath.replace(/\.zip$/, "");
 
-      console.log(`Extracting ${zipPath} -> ${extractDir}`);
+      console.log(`${progress} 📦 Extracting ${path.basename(zipPath)}`);
 
       this.extractArtifact(zipPath, extractDir);
 
       extracted.push(extractDir);
 
-      console.log(`✓ Extracted ${extractDir}`);
+      console.log(`${progress} ✅ Extracted ${extractDir}`);
     }
 
     return extracted;
   }
 
   async fetchRunArtifacts(runId: number): Promise<string[]> {
-    return this.downloadAndExtractRunArtifacts(
-      runId,
-      configAccess.getGithubRunDirectory(runId),
-    );
+    const outputDir = this.getRunDirectory(runId);
+
+    console.log(`📁 Output directory: ${outputDir}`);
+
+    return this.downloadAndExtractRunArtifacts(runId, outputDir);
+  }
+
+  async validateRunArtifacts(runId: number): Promise<void> {
+    try {
+      const artifacts = await this.listArtifacts(runId);
+
+      if (artifacts.length === 0) {
+        throw new Error(`No artifacts found for workflow run ${runId}`);
+      }
+    } catch (error: any) {
+      if (error.status === 404) {
+        throw new Error(
+          `Workflow run ${runId} was not found in ${this.config.owner}/${this.config.repo}`,
+        );
+      }
+
+      throw error;
+    }
   }
 
   extractArtifact(zipPath: string, outputDir: string): string {
@@ -130,6 +162,6 @@ export class GithubArtifactService {
   }
 
   getRunResultsDirectory(runId: number): string {
-    return configAccess.getGithubRunDirectory(runId);
+    return this.getRunDirectory(runId);
   }
 }

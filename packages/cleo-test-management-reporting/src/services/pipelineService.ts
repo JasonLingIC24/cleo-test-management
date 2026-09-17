@@ -1,6 +1,7 @@
 import { runCodemodWorkflow } from "./codemodWorkflowService.js";
 import { runPhase2Workflow } from "./phase2WorkflowService.js";
 import { runPhase3Workflow } from "./phase3WorkflowService.js";
+import { acquireArtifactsForRuntimeContext } from "./artifactAcquisitionWorkflowService.js";
 import type { RuntimeContext } from "../models/runtimeContext.js";
 import type { PublishOptions } from "../models/publishOptions.js";
 
@@ -21,9 +22,13 @@ export async function runPhase1(runtimeContext: RuntimeContext) {
  Phase 2 Program 
 ==================== */
 export async function runPhase2(runtimeContext: RuntimeContext) {
-  void runtimeContext;
-
   console.log("📊 Phase 2 — Transform + Results");
+
+  if (runtimeContext.source === "github" && runtimeContext.runId) {
+    console.log(`📦 Acquiring workflow artifacts (${runtimeContext.runId})`);
+
+    await acquireArtifactsForRuntimeContext(runtimeContext);
+  }
 
   const results = await runPhase2Workflow();
 
@@ -31,7 +36,6 @@ export async function runPhase2(runtimeContext: RuntimeContext) {
 
   return results;
 }
-
 /* =================
  Phase 3 Program 
 ==================== */

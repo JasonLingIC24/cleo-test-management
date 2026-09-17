@@ -22,6 +22,7 @@ export function registerPipelineCommands(program: Command) {
     .option("--phase3", "Run release + summary")
     .option("--all", "Run all phases")
     .option("--version <name>", "Release version")
+    .option("--runId <id>", "GitHub workflow run id")
     .option("--jira <key>", "Jira issue key")
     .option("--releaseKeys <keys>", "Comma-separated Jira keys")
     .option("--publish", "Publish to Jira (phase3)")
