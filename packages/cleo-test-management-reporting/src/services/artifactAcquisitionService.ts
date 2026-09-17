@@ -1,4 +1,6 @@
 import { GithubArtifactService } from "./githubArtifactService.js";
+import { configAccess } from "./configAccessService.js";
+import { stageArtifactFiles } from "./artifactStagingService.js";
 
 import type { ArtifactAcquisitionOptions } from "../models/artifactAcquisitionOptions.js";
 
@@ -25,15 +27,24 @@ export async function acquireArtifacts(
 
   await github.validateRunArtifacts(options.runId);
 
-  const directories = await github.fetchRunArtifacts(options.runId);
+  const runDirectory = github.getRunResultsDirectory(options.runId);
 
-  console.log(`✅ Downloaded and extracted ${directories.length} artifact(s)`);
+  const downloads = await github.downloadRunArtifacts(
+    options.runId,
+    runDirectory,
+  );
 
-  directories.forEach((dir) => {
-    console.log(` - ${dir}`);
+  console.log(`✅ Downloaded ${downloads.length} artifact(s)`);
+
+  downloads.forEach((file) => {
+    console.log(` - ${file}`);
   });
 
-  console.log(
-    `📁 Results directory: ${github.getRunResultsDirectory(options.runId)}`,
-  );
+  stageArtifactFiles(downloads, {
+    backend: configAccess.getBackendResults(),
+    frontend: configAccess.getFrontendResults(),
+    cypress: configAccess.getCypressResults(),
+  });
+
+  console.log("✅ Artifacts staged for Phase 2 processing");
 }
