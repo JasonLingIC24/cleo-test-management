@@ -25,7 +25,9 @@ export async function runPhase2(runtimeContext: RuntimeContext) {
   console.log("📊 Phase 2 — Transform + Results");
 
   if (runtimeContext.source === "github" && runtimeContext.runId) {
-    console.log(`📦 Acquiring workflow artifacts (${runtimeContext.runId})`);
+    console.log(
+      `📦 GitHub mode detected. Acquiring artifacts for workflow run (${runtimeContext.runId})`,
+    );
 
     await acquireArtifactsForRuntimeContext(runtimeContext);
   }
