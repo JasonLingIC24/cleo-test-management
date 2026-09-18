@@ -271,7 +271,7 @@ function buildSummaryLine(data: ResultSummary) {
   const passRate = data.passRate ?? 0;
 
   if (!data.total || data.skipped === data.total) {
-    return "⚠️ Not executed — coverage incomplete";
+    return "⚠️ Not executed - coverage incomplete";
   }
 
   if (failed === 0 && passRate >= 95) {
@@ -286,7 +286,7 @@ function buildSummaryLine(data: ResultSummary) {
     return "⚠️ Minor instability detected";
   }
 
-  return "🔴 Significant instability — investigation required";
+  return "🔴 Significant instability - investigation required";
 }
 
 function buildAreaSection(data: ResultSummary) {

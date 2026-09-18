@@ -25,5 +25,6 @@ export function buildArtifactAcquisitionOptions(
     owner: runtimeContext.owner,
     repo: runtimeContext.repo,
     runId: runtimeContext.runId,
+    refreshArtifacts: runtimeContext.refreshArtifacts,
   };
 }

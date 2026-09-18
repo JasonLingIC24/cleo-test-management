@@ -7,20 +7,18 @@ import { configAccess } from "./configAccessService.js";
    EXTRACT COMMANDS (RECURSIVE)
 ========================= */
 function extractCommands(command: Command, parent = ""): any[] {
-
   const results: any[] = [];
 
   for (const cmd of command.commands) {
-
     const name = `${parent} ${cmd.name()}`.trim();
 
     results.push({
       name,
       description: cmd.description() || "",
-      options: cmd.options.map(opt => ({
+      options: cmd.options.map((opt) => ({
         flags: opt.flags,
-        description: opt.description || ""
-      }))
+        description: opt.description || "",
+      })),
     });
 
     // ✅ recurse into subcommands
@@ -34,7 +32,6 @@ function extractCommands(command: Command, parent = ""): any[] {
    BUILD MARKDOWN
 ========================= */
 function buildMarkdown(commands: any[]): string {
-
   const grouped: Record<string, any[]> = {};
 
   for (const cmd of commands) {
@@ -47,7 +44,6 @@ function buildMarkdown(commands: any[]): string {
   let md = `# Cleo CLI Documentation\n\n`;
 
   for (const [group, cmds] of Object.entries(grouped)) {
-
     md += `## ${group.toUpperCase()}\n\n`;
 
     for (const cmd of cmds) {
@@ -57,7 +53,7 @@ function buildMarkdown(commands: any[]): string {
       if (cmd.options.length) {
         md += `**Options:**\n\n`;
         for (const opt of cmd.options) {
-          md += `- \`${opt.flags}\` — ${opt.description}\n`;
+          md += `- \`${opt.flags}\` - ${opt.description}\n`;
         }
         md += `\n`;
       }
@@ -71,7 +67,6 @@ function buildMarkdown(commands: any[]): string {
    BUILD CONFLUENCE FORMAT
 ========================= */
 function buildConfluence(commands: any[]): string {
-
   let txt = `h1. Cleo CLI Documentation\n\n`;
 
   for (const cmd of commands) {
@@ -81,7 +76,7 @@ function buildConfluence(commands: any[]): string {
     if (cmd.options.length) {
       txt += `*Options:*\n`;
       for (const opt of cmd.options) {
-        txt += `- ${opt.flags} — ${opt.description}\n`;
+        txt += `- ${opt.flags} - ${opt.description}\n`;
       }
       txt += `\n`;
     }
@@ -94,7 +89,6 @@ function buildConfluence(commands: any[]): string {
    MAIN
 ========================= */
 export function generateCliDocs(program: Command) {
-
   const docsDir = configAccess.getDocsRoot();
 
   const commands = extractCommands(program);

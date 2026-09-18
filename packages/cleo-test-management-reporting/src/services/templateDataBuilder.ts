@@ -63,7 +63,7 @@ export function buildTemplateData(data: TestSummaryReportData): TemplateData {
     (data.cypress?.result?.features || [])
       .map(
         (f) =>
-          `• ${mapDomainName(f.name)} — ${f.failed} failed (${f.passRate}%)`,
+          `• ${mapDomainName(f.name)} - ${f.failed} failed (${f.passRate}%)`,
       )
       .join("\n") || "No Cypress feature data available";
 

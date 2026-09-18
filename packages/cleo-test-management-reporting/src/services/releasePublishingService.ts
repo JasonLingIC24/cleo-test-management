@@ -37,7 +37,7 @@ export async function publishReleaseToJira(options: PublishOptions) {
 
   // ✅ Release Notes (only if needed)
   if (options.attachReleaseNotes && !fs.existsSync(releaseNotesPath)) {
-    console.log("⚠️ Missing release notes — generating...");
+    console.log("⚠️ Missing release notes - generating...");
 
     if (!options.version) {
       console.warn("⚠️ Cannot generate release notes (no version provided)");
@@ -48,12 +48,12 @@ export async function publishReleaseToJira(options: PublishOptions) {
 
   // ✅ Summary Report (only if needed)
   if (options.attachSummary && !fs.existsSync(summaryPath)) {
-    console.log("⚠️ Missing summary report — generating...");
+    console.log("⚠️ Missing summary report - generating...");
 
     const resultsPath = configAccess.getCompleteResultsPath();
 
     if (!fs.existsSync(resultsPath)) {
-      console.log("⚠️ No completeResults found — cannot generate summary");
+      console.log("⚠️ No completeResults found - cannot generate summary");
     } else {
       const templatePath = configAccess.getTemplate("summaryReport");
 

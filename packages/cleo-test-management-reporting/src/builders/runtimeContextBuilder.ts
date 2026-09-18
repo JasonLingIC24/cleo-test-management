@@ -22,6 +22,7 @@ export function buildRuntimeContext(
     owner: config.github.owner,
     repo: config.github.repo,
     runId: executionOptions.runId,
+    refreshArtifacts: executionOptions.refreshArtifacts,
     publish,
     jiraKey: executionOptions.jiraKey,
     releaseKeys: executionOptions.releaseKeys,

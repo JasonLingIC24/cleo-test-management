@@ -12,6 +12,7 @@ export function buildPipelineExecutionOptions(
   return {
     version: commandOptions.version,
     runId: commandOptions.runId ? Number(commandOptions.runId) : undefined,
+    refreshArtifacts: commandOptions.refreshArtifacts,
     publish: commandOptions.publish,
     jiraKey: commandOptions.jira,
     releaseKeys:

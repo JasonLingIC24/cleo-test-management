@@ -7,6 +7,7 @@ export interface RuntimeContext {
   owner?: string;
   repo?: string;
   runId?: number;
+  refreshArtifacts?: boolean;
   publish: boolean;
   jiraKey?: string;
   releaseKeys?: string[];

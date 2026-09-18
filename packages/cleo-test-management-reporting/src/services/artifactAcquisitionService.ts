@@ -29,10 +29,19 @@ export async function acquireArtifacts(
 
   const runDirectory = github.getRunResultsDirectory(options.runId);
 
-  const downloads = await github.downloadRunArtifacts(
-    options.runId,
-    runDirectory,
-  );
+  let downloads: string[];
+
+  if (!options.refreshArtifacts && github.hasCachedArtifacts(options.runId)) {
+    console.log(`✅ Using cached artifacts for run ${options.runId}`);
+
+    downloads = github.getCachedArtifacts(options.runId);
+  } else {
+    if (options.refreshArtifacts) {
+      console.log(`🔄 Refreshing cached artifacts for run ${options.runId}`);
+    }
+
+    downloads = await github.downloadRunArtifacts(options.runId, runDirectory);
+  }
 
   console.log(`✅ Downloaded ${downloads.length} artifact(s)`);
 
@@ -46,5 +55,5 @@ export async function acquireArtifacts(
     cypress: configAccess.getCypressResults(),
   });
 
-  console.log("✅ Artifacts staged for Phase 2 processing");
+  console.log("✅ Artifacts staged for Analyse - Results Processing");
 }

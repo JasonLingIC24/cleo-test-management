@@ -5,24 +5,24 @@ import { acquireArtifactsForRuntimeContext } from "./artifactAcquisitionWorkflow
 import type { RuntimeContext } from "../models/runtimeContext.js";
 import type { PublishOptions } from "../models/publishOptions.js";
 
-/* =================
- Phase 1 Program 
-==================== */
+/* =============================
+ Prepare - Validation & Codemod
+============================= */
 export async function runPhase1(runtimeContext: RuntimeContext) {
   void runtimeContext;
 
-  console.log("🔧 Phase 1 — Validate & Codemod");
+  console.log("🛠️ Prepare - Validation & Codemod");
 
   await runCodemodWorkflow();
 
-  console.log("✅ Phase 1 complete\n");
+  console.log("✅ Prepare complete\n");
 }
 
-/* =================
- Phase 2 Program 
-==================== */
+/* ===========================
+ Analyse - Results Processing 
+=========================== */
 export async function runPhase2(runtimeContext: RuntimeContext) {
-  console.log("📊 Phase 2 — Transform + Results");
+  console.log("📊 Analyse - Results Processing");
 
   if (runtimeContext.source === "github" && runtimeContext.runId) {
     console.log(
@@ -34,20 +34,20 @@ export async function runPhase2(runtimeContext: RuntimeContext) {
 
   const results = await runPhase2Workflow();
 
-  console.log("✅ Phase 2 complete\n");
+  console.log("✅ Analyse complete\n");
 
   return results;
 }
-/* =================
- Phase 3 Program 
-==================== */
+/* ===============================
+ Release - Reporting & Publishing 
+=============================== */
 export async function runPhase3(
   runtimeContext: RuntimeContext,
   publishOptions: PublishOptions,
 ) {
-  console.log("📄 Phase 3 — Release + Reporting");
+  console.log("📄 Release - Reporting & Publishing");
 
   await runPhase3Workflow(runtimeContext, publishOptions);
 
-  console.log("✅ Phase 3 complete\n");
+  console.log("✅ Release complete\n");
 }

@@ -164,4 +164,31 @@ export class GithubArtifactService {
   getRunResultsDirectory(runId: number): string {
     return this.getRunDirectory(runId);
   }
+
+  hasCachedArtifacts(runId: number): boolean {
+    const runDirectory = this.getRunDirectory(runId);
+
+    if (!fs.existsSync(runDirectory)) {
+      return false;
+    }
+
+    const zipFiles = fs
+      .readdirSync(runDirectory)
+      .filter((file) => file.endsWith(".zip"));
+
+    return zipFiles.length > 0;
+  }
+
+  getCachedArtifacts(runId: number): string[] {
+    const runDirectory = this.getRunDirectory(runId);
+
+    if (!fs.existsSync(runDirectory)) {
+      return [];
+    }
+
+    return fs
+      .readdirSync(runDirectory)
+      .filter((file) => file.endsWith(".zip"))
+      .map((file) => path.join(runDirectory, file));
+  }
 }

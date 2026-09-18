@@ -1,4 +1,4 @@
-/* Domain-facing shapes only — no parser imports */
+/* Domain-facing shapes only - no parser imports */
 export interface ParsedSpec {
   feature: {
     name: string;

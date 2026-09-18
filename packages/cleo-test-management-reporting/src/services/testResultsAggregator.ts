@@ -65,7 +65,7 @@ export async function generateCompleteTestResults(inputs?: {
       manualResults = EMPTY_MANUAL_RESULTS;
     }
   } else {
-    console.warn("⚠️ Manual results missing — skipping");
+    console.warn("⚠️ Manual results missing - skipping");
   }
 
   /* ===============================

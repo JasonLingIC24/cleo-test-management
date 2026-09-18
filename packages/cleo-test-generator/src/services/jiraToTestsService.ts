@@ -8,9 +8,8 @@ import { generateTestCase } from "../generators/testCaseGenerator.js";
 import { generateFeatureFromBDD } from "../generators/bddGenerator.js";
 import {
   isBDDFormatted,
-  extractBDDSteps
+  extractBDDSteps,
 } from "../parsers/acceptanceCriteriaParser.js";
-
 
 export async function generateTestsFromRelease(
   issues: any[],
@@ -18,9 +17,8 @@ export async function generateTestsFromRelease(
     featuresDir: string;
     testCasesDir: string;
     summaryDir: string;
-  }
+  },
 ) {
-
   const { featuresDir, testCasesDir, summaryDir } = options;
 
   // ✅ ensure folders exist
@@ -31,16 +29,15 @@ export async function generateTestsFromRelease(
   const allTestCases: any[] = [];
 
   for (const issue of issues) {
-
     // ✅ ALWAYS define this FIRST
     const featurePath = path.join(featuresDir, `${issue.key}.feature`);
     const testCasePath = path.join(testCasesDir, `${issue.key}.json`);
 
     const text = extractPlainTextFromADF(issue.description);
 
-    // ✅ STEP 1 — feature attachment
+    // ✅ STEP 1 - feature attachment
     const featureAttachment = issue.fields?.attachment?.find((a: any) =>
-      a.filename?.endsWith(".feature")
+      a.filename?.endsWith(".feature"),
     );
 
     if (featureAttachment) {
@@ -54,7 +51,7 @@ export async function generateTestsFromRelease(
       continue;
     }
 
-    // ✅ STEP 2 — BDD detection
+    // ✅ STEP 2 - BDD detection
     if (isBDDFormatted(text)) {
       console.log(`🧠 Detected BDD in ${issue.key}`);
 
@@ -66,7 +63,7 @@ export async function generateTestsFromRelease(
       continue;
     }
 
-    // ✅ STEP 3 — fallback
+    // ✅ STEP 3 - fallback
     const ac = extractAcceptanceCriteria(text);
 
     const feature = generateFeatureFromIssue(issue, text, ac);
@@ -76,7 +73,6 @@ export async function generateTestsFromRelease(
     const testCase = generateTestCase(issue, ac, text);
     fs.writeFileSync(testCasePath, JSON.stringify(testCase, null, 2));
   }
-
 
   // ✅ summary file
   const summaryPath = path.join(summaryDir, "all-test-cases.json");

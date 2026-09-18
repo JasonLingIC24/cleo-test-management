@@ -177,7 +177,7 @@ export async function generateExecutionReports(
     }
     separatorHeaderRow.height = 3;
 
-    // ✅ GROUPING (IMPORTANT — now uses domainRows)
+    // ✅ GROUPING (IMPORTANT - now uses domainRows)
     const grouped = new Map<string, Map<string, any[]>>();
 
     for (const r of domainRows) {
