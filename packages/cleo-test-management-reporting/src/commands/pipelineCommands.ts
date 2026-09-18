@@ -32,6 +32,7 @@ export function registerPipelineCommands(program: Command) {
     .option("--publish", "Publish to Jira (phase3)")
     .option("--attach-summary")
     .option("--attach-release-notes")
+    .option("--attach-bundle", "Attach release bundle")
     .action(async (opts: PipelineCommandOptions) => {
       try {
         const config = getConfig();

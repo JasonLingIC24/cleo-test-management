@@ -10,5 +10,6 @@ export function buildPublishOptions(
     jiraKey: commandOptions.jira,
     attachSummary: commandOptions.attachSummary,
     attachReleaseNotes: commandOptions.attachReleaseNotes,
+    attachBundle: commandOptions.attachBundle,
   };
 }

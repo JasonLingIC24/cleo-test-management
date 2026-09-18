@@ -3,4 +3,5 @@ export interface PublishOptions {
   jiraKey?: string;
   attachSummary?: boolean;
   attachReleaseNotes?: boolean;
+  attachBundle?: boolean;
 }

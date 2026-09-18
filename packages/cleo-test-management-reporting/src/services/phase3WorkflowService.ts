@@ -57,12 +57,21 @@ export async function runPhase3Workflow(
   await generateBugMetricFiles(reportContext);
 
   /* =========================
-     OPTIONAL PUBLISH
+   BUNDLE
+  ========================= */
+
+  const bundlePath = await buildReleaseBundle(runtimeContext);
+
+  console.log(`📦 Release bundle created: ${bundlePath}`);
+
+  /* =========================
+   OPTIONAL PUBLISH
   ========================= */
 
   if (publishOptions.publish) {
     if (!publishOptions.jiraKey) {
       console.log("⚠️ Cannot publish (missing --jira)");
+
       return;
     }
 
@@ -72,17 +81,10 @@ export async function runPhase3Workflow(
       jiraKey: publishOptions.jiraKey,
       attachSummary: publishOptions.attachSummary,
       attachReleaseNotes: publishOptions.attachReleaseNotes,
+      attachBundle: publishOptions.attachBundle,
       version,
     });
   }
-
-  /* =========================
-     BUNDLE
-  ========================= */
-
-  const bundlePath = await buildReleaseBundle(runtimeContext);
-
-  console.log(`📦 Release bundle created: ${bundlePath}`);
 }
 
 function cleanDirectory(dir: string) {

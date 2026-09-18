@@ -14,4 +14,5 @@ export interface PipelineCommandOptions {
   publish?: boolean;
   attachSummary?: boolean;
   attachReleaseNotes?: boolean;
+  attachBundle?: boolean;
 }

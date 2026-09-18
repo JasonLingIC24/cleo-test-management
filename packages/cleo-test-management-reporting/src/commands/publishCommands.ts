@@ -10,6 +10,7 @@ export function registerPublishCommands(program: Command) {
     .requiredOption("--jira <key>", "Jira issue key")
     .option("--attach-summary", "Attach test summary report")
     .option("--attach-release-notes", "Attach release notes")
+    .option("--attach-bundle", "Attach release bundle")
     .option("--version <name>", "Version (for auto-generating release notes)")
     .action(async (opts) => {
       try {
@@ -17,6 +18,7 @@ export function registerPublishCommands(program: Command) {
           jiraKey: opts.jira,
           attachSummary: opts.attachSummary,
           attachReleaseNotes: opts.attachReleaseNotes,
+          attachBundle: opts.attachBundle,
           version: opts.version,
         });
       } catch (err: any) {

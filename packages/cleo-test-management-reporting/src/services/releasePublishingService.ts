@@ -12,7 +12,8 @@ type PublishOptions = {
   jiraKey: string;
   attachSummary?: boolean;
   attachReleaseNotes?: boolean;
-  version?: string; // ✅ optional fallback for generation
+  attachBundle?: boolean;
+  version?: string;
 };
 
 export async function publishReleaseToJira(options: PublishOptions) {
@@ -28,8 +29,23 @@ export async function publishReleaseToJira(options: PublishOptions) {
 
   const summaryPath = path.join(
     docsDir,
-    buildFileName(config, "test-summary.docx"),
+    buildFileName(config, "test-summary-report.docx"),
   );
+
+  console.log("DEBUG releaseNotesPath:", releaseNotesPath);
+  console.log("DEBUG summaryPath:", summaryPath);
+  console.log("DEBUG releaseNotes exists:", fs.existsSync(releaseNotesPath));
+
+  console.log("DEBUG summary exists:", fs.existsSync(summaryPath));
+
+  const bundleDir = path.join(configAccess.getVersionedReportsRoot(), "bundle");
+
+  const bundleFiles = fs.existsSync(bundleDir)
+    ? fs.readdirSync(bundleDir).filter((file) => file.endsWith(".zip"))
+    : [];
+
+  const bundlePath =
+    bundleFiles.length > 0 ? path.join(bundleDir, bundleFiles[0]) : undefined;
 
   /* =========================
      AUTO-GENERATE REPORTS
@@ -95,6 +111,11 @@ export async function publishReleaseToJira(options: PublishOptions) {
     console.log("ℹ️ Dashboard only (no attachments)");
   }
 
+  if (options.attachBundle && bundlePath && fs.existsSync(bundlePath)) {
+    await attachFileToJira(options.jiraKey, bundlePath, jiraConfig);
+
+    console.log("📎 Attached release bundle");
+  }
+
   console.log("✅ Jira fully updated");
 }
-``;
