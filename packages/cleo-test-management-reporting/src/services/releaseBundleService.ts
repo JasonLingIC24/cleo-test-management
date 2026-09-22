@@ -2,66 +2,54 @@ import fs from "fs";
 import path from "path";
 import AdmZip from "adm-zip";
 
-import type { RuntimeContext } from "../models/runtimeContext.js";
-
 import { configAccess } from "./configAccessService.js";
+import type { RuntimeContext } from "../models/runtimeContext.js";
 
 interface BundleManifest {
   version: string;
   generatedAt: string;
-  source: string;
   runId?: number;
 }
 
 export async function buildReleaseBundle(
   runtimeContext: RuntimeContext,
 ): Promise<string> {
-  const version = runtimeContext.version;
-
   const reportsDir = configAccess.getVersionedReportsRoot();
 
   const bundleDir = path.join(reportsDir, "bundle");
 
-  cleanDirectory(bundleDir);
+  const stagingDir = path.join(reportsDir, "bundle-temp");
 
-  fs.mkdirSync(bundleDir, { recursive: true });
+  cleanDirectory(stagingDir);
+
+  fs.mkdirSync(stagingDir, {
+    recursive: true,
+  });
 
   console.log("📦 Building Release Bundle...");
 
   /* =========================
-     COPY DOCS
+     COPY CONTENT
   ========================= */
 
   copyDirectoryIfExists(
     configAccess.getDocsReleaseDir(),
-    path.join(bundleDir, "docs"),
+    path.join(stagingDir, "docs"),
   );
-
-  /* =========================
-     COPY JSON
-  ========================= */
 
   copyDirectoryIfExists(
     configAccess.getJsonReports(),
-    path.join(bundleDir, "json"),
+    path.join(stagingDir, "json"),
   );
-
-  /* =========================
-     COPY EXECUTION REPORTS
-  ========================= */
 
   copyDirectoryIfExists(
     configAccess.getExecutionReports(),
-    path.join(bundleDir, "execution-reports"),
+    path.join(stagingDir, "execution-reports"),
   );
-
-  /* =========================
-     COPY AUTOMATED REPORTS
-  ========================= */
 
   copyDirectoryIfExists(
     configAccess.getAutomatedReportsDir(),
-    path.join(bundleDir, "automated"),
+    path.join(stagingDir, "automated"),
   );
 
   /* =========================
@@ -69,14 +57,13 @@ export async function buildReleaseBundle(
   ========================= */
 
   const manifest: BundleManifest = {
-    version,
+    version: runtimeContext.version,
     generatedAt: new Date().toISOString(),
-    source: runtimeContext.source,
     runId: runtimeContext.runId,
   };
 
   fs.writeFileSync(
-    path.join(bundleDir, "manifest.json"),
+    path.join(stagingDir, "manifest.json"),
     JSON.stringify(manifest, null, 2),
   );
 
@@ -84,17 +71,26 @@ export async function buildReleaseBundle(
      ZIP
   ========================= */
 
+  fs.mkdirSync(bundleDir, {
+    recursive: true,
+  });
+
   const zipPath = path.join(
-    reportsDir,
-    "bundle",
-    `elevate-${version}-release-bundle.zip`,
+    bundleDir,
+    `elevate-${runtimeContext.version}-release-bundle.zip`,
   );
 
   const zip = new AdmZip();
 
-  zip.addLocalFolder(bundleDir);
+  zip.addLocalFolder(stagingDir);
 
   zip.writeZip(zipPath);
+
+  /* =========================
+     CLEAN STAGING
+  ========================= */
+
+  cleanDirectory(stagingDir);
 
   console.log(`✅ Release Bundle: ${zipPath}`);
 

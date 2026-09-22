@@ -32,12 +32,6 @@ export async function publishReleaseToJira(options: PublishOptions) {
     buildFileName(config, "test-summary-report.docx"),
   );
 
-  console.log("DEBUG releaseNotesPath:", releaseNotesPath);
-  console.log("DEBUG summaryPath:", summaryPath);
-  console.log("DEBUG releaseNotes exists:", fs.existsSync(releaseNotesPath));
-
-  console.log("DEBUG summary exists:", fs.existsSync(summaryPath));
-
   const bundleDir = path.join(configAccess.getVersionedReportsRoot(), "bundle");
 
   const bundleFiles = fs.existsSync(bundleDir)

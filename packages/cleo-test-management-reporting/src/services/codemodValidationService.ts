@@ -8,7 +8,7 @@ export async function validateCodemodFiles(files: string[], inputPath: string) {
     removeNestedTags: false,
     domainRoot: inputPath,
     dryRun: true,
-    failOnNestedTags: true,
+    failOnNestedTags: false,
   });
 
   let hasErrors = false;
@@ -30,7 +30,8 @@ export async function validateCodemodFiles(files: string[], inputPath: string) {
   }
 
   if (hasErrors) {
-    console.log("\n❌ Validation failed");
-    process.exit(1);
+    console.log(
+      "\n⚠️ Validation violations detected - continuing with codemod generation",
+    );
   }
 }

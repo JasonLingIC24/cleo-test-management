@@ -3,16 +3,20 @@ import { resolveFiles } from "../utils/resolveFiles.js";
 import { runCodemod } from "cleo-cypress-codemod";
 import { validateCodemodFiles } from "./codemodValidationService.js";
 import { writeCodemodOutput } from "./codemodOutputService.js";
+import { acquireVersionedTests } from "./sourceAcquisitionService.js";
 
 export async function runCodemodWorkflow() {
-  const inputPath = configAccess.getVersionedCypressSpecs();
+  await acquireVersionedTests();
 
+  const inputPath = configAccess.getVersionedCypressSpecs();
   const files = resolveFiles(inputPath);
 
-  /* ✅ VALIDATE */
+  console.log("🔍 Validating Cypress tests...");
+
   await validateCodemodFiles(files, inputPath);
 
-  /* ✅ APPLY CODEMOD */
+  console.log("🔧 Running codemod...");
+
   const result = await runCodemod(files, {
     ensureFeatureWrapper: true,
     moveTopLevelTags: true,
@@ -23,6 +27,5 @@ export async function runCodemodWorkflow() {
     failOnNestedTags: false,
   });
 
-  /* ✅ WRITE OUTPUT */
   writeCodemodOutput(result, inputPath);
 }
