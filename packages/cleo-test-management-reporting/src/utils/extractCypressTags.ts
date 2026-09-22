@@ -124,7 +124,6 @@ export function extractCypressTags(inputPath?: string) {
 
   if (mochaRaw) {
     mochaTags = extractTagsFromMochawesome(mochaRaw);
-    console.log(`✅ Loaded ${mochaTags.length} tests from mochawesome`);
   } else {
     console.warn("⚠️ No mochawesome data found");
   }
@@ -139,8 +138,6 @@ export function extractCypressTags(inputPath?: string) {
     configAccess.getJsonReports(),
     "cypress-tags.json",
   );
-
-  console.log(`📥 Cypress test directory: ${TEST_ROOT}`);
 
   walk(TEST_ROOT, results, TEST_ROOT);
 
@@ -168,8 +165,6 @@ export function extractCypressTags(inputPath?: string) {
       });
     }
   }
-
-  console.log(`🔍 Tag mismatches detected: ${comparison.length}`);
 
   // ✅ summary stats
   const allTests = fileTests;
@@ -211,22 +206,12 @@ export function extractCypressTags(inputPath?: string) {
   fs.writeFileSync(OUTPUT_PATH, JSON.stringify(output, null, 2));
 
   // ✅ logging
-  if (comparison.length > 0) {
-    console.warn("⚠️ Some tags differ between file and runtime");
-  }
-
-  console.log(`📊 Total tests: ${totalTests}`);
-  console.log(`⚠️ Untagged tests: ${untaggedTests}`);
-
-  console.log("\n📊 Tests by domain:");
-
-  Object.entries(domainCounts)
-    .sort((a, b) => b[1] - a[1])
-    .forEach(([domain, count]) => {
-      console.log(`   - ${domain}: ${count}`);
-    });
-
-  console.log(`\n✅ Cypress tags written to ${OUTPUT_PATH}`);
+  console.log("✅ Cypress tags written");
+  console.log("✅ Cypress tag analysis complete");
+  console.log(`   Runtime results: ${mochaTags.length}`);
+  console.log(`   Tests discovered: ${allTests.length}`);
+  console.log(`   Tag mismatches: ${comparison.length}`);
+  console.log(`   Untagged tests: ${untaggedTests}`);
 }
 
 function extractTagsFromFile(content: string): string[] {

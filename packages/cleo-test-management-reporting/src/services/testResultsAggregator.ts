@@ -53,9 +53,6 @@ export async function generateCompleteTestResults(inputs?: {
     `${buildBaseName(config)}-manual-tests.xlsx`,
   );
 
-  console.log("📊 Loading manual test results from Excel:");
-  console.log(`📊 Manual results file: ${manualPath}`);
-
   if (fs.existsSync(manualPath)) {
     try {
       manualResults = await parseManualResults(manualPath);
@@ -280,7 +277,7 @@ export async function generateCompleteTestResults(inputs?: {
   }
   fs.writeFileSync(outputPath, JSON.stringify(result, null, 2));
 
-  console.log(`✅ Complete test results written: ${outputPath}`);
+  console.log("✅ Complete test results written");
 
   return result;
 }

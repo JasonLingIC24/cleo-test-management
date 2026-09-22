@@ -13,25 +13,26 @@ export async function validateCodemodFiles(files: string[], inputPath: string) {
 
   let hasErrors = false;
 
+  let warningCount = 0;
+  let violationCount = 0;
+  let filesWithViolations = 0;
+
   for (const file of validation.files) {
     if (file.violations?.length) {
-      hasErrors = true;
-
-      console.log(`❌ ${file.filePath}`);
-
-      file.violations.forEach((v: string) => console.log(`   - ${v}`));
+      filesWithViolations++;
+      violationCount += file.violations.length;
     }
 
     if (file.warnings?.length) {
-      console.log(`⚠️ ${file.filePath}`);
-
-      file.warnings.forEach((w: string) => console.log(`   - ${w}`));
+      warningCount += file.warnings.length;
     }
   }
 
+  console.log(
+    `⚠️ Validation completed (${filesWithViolations} files with violations, ${warningCount} warnings)`,
+  );
+
   if (hasErrors) {
-    console.log(
-      "\n⚠️ Validation violations detected - continuing with codemod generation",
-    );
+    console.log("⚠️ Continuing with codemod generation");
   }
 }

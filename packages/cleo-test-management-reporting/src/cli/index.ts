@@ -69,6 +69,8 @@ export async function run(
       const outputDir = path.join(baseOutputDir, "excel");
       fs.mkdirSync(outputDir, { recursive: true });
 
+      let workbookCount = 0;
+
       for (const [domain, features] of Object.entries(groupedByDomain)) {
         const domainSafe = domain.replace(/\s+/g, "-").toLowerCase();
 
@@ -85,9 +87,10 @@ export async function run(
           team: fullConfig.owners.qaTeam,
         });
 
-        console.log(`✅ Excel created: ${fileName}`);
+        workbookCount++;
       }
-
+      console.log("✅ Automated reports generated");
+      console.log(`   Workbooks: ${workbookCount}`);
       break; // ✅ IMPORTANT
     }
 

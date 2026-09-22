@@ -7,10 +7,7 @@ import { cleanText } from "cleo-domain";
  * Generate Excel report
  */
 
-export async function toExcel(
-  features: FeatureReport[],
-  config?: any
-) {
+export async function toExcel(features: FeatureReport[], config?: any) {
   const workbook = new ExcelJS.Workbook();
 
   addDomainSheets(workbook, features, config);
@@ -42,11 +39,7 @@ export async function toExcel(
   // ✅ ensure directory ALWAYS exists
   fs.mkdirSync(path.dirname(filePath), { recursive: true });
   await workbook.xlsx.writeFile(filePath);
-
-  console.log(`✅ Excel: ${filePath}`);
-
 }
-
 
 function moveToFront(workbook: ExcelJS.Workbook, sheetName: string) {
   const sheet = workbook.getWorksheet(sheetName);
@@ -63,14 +56,12 @@ function moveToFront(workbook: ExcelJS.Workbook, sheetName: string) {
 function addDomainSheets(
   workbook: ExcelJS.Workbook,
   features: FeatureReport[],
-  config?: any
+  config?: any,
 ) {
-  const usedNames = new Set<string>();   // ✅ ADD THIS HERE
+  const usedNames = new Set<string>(); // ✅ ADD THIS HERE
 
   for (const feature of features) {
-    const rawFileName = feature.file
-      ? path.basename(feature.file)
-      : "";
+    const rawFileName = feature.file ? path.basename(feature.file) : "";
 
     const cleanedFileName = rawFileName
       .replace(/\.(spec|cy)\.(ts|js)$/, "")
@@ -91,8 +82,7 @@ function addDomainSheets(
         state: "frozen",
         xSplit: 1,
         ySplit: headerRowIndex,
-
-      }
+      },
     ];
 
     // Header
@@ -119,7 +109,7 @@ function addDomainSheets(
       { width: 30 }, // Evidence
     ];
 
-    headerRow.eachCell(cell => {
+    headerRow.eachCell((cell) => {
       cell.font = { bold: true };
       cell.font.name = "Nunito Sans";
       cell.font.size = 10;
@@ -130,21 +120,20 @@ function addDomainSheets(
 
     headerRow.height = 30;
 
-    sheet.eachRow(row => {
-      row.eachCell(cell => {
+    sheet.eachRow((row) => {
+      row.eachCell((cell) => {
         cell.font = cell.font || {};
         cell.font.name = "Nunito Sans";
         cell.font.size = 10;
       });
     });
 
-    [6, 7, 8].forEach(col => {
+    [6, 7, 8].forEach((col) => {
       headerRow.getCell(col).alignment = {
         vertical: "middle",
-        horizontal: "center"
+        horizontal: "center",
       };
     });
-
 
     /* ================= FEATURES ================= */
 
@@ -156,9 +145,7 @@ function addDomainSheets(
 
       const steps = scenario.steps ?? [];
 
-      const scenarioName = cleanText(
-        cleanScenarioName(scenario.title)
-      );
+      const scenarioName = cleanText(cleanScenarioName(scenario.title));
 
       const givenStep = steps.find((s: any) => s.type === "GIVEN");
       const whenStep = steps.find((s: any) => s.type === "WHEN");
@@ -167,36 +154,35 @@ function addDomainSheets(
       let isFirstRow = true;
 
       for (const step of thenSteps) {
-
         const tcId = step.tcId || "";
 
-        const givenCell = isFirstRow && givenStep?.description
-          ? {
-            richText: [
-              { text: "GIVEN ", font: { bold: true } },
-              { text: cleanText(givenStep.description) }
-            ]
-          }
-          : "";
+        const givenCell =
+          isFirstRow && givenStep?.description
+            ? {
+                richText: [
+                  { text: "GIVEN ", font: { bold: true } },
+                  { text: cleanText(givenStep.description) },
+                ],
+              }
+            : "";
 
-        const whenCell = isFirstRow && whenStep?.description
-          ? {
-            richText: [
-              { text: "WHEN ", font: { bold: true } },
-              { text: cleanText(whenStep.description) }
-            ]
-          }
-          : "";
+        const whenCell =
+          isFirstRow && whenStep?.description
+            ? {
+                richText: [
+                  { text: "WHEN ", font: { bold: true } },
+                  { text: cleanText(whenStep.description) },
+                ],
+              }
+            : "";
 
-        const scenarioCell = isFirstRow
-          ? safe(scenarioName)
-          : "";
+        const scenarioCell = isFirstRow ? safe(scenarioName) : "";
 
         const thenCell = {
           richText: [
             { text: "THEN ", font: { bold: true } },
-            { text: cleanText(step.description) }
-          ]
+            { text: cleanText(step.description) },
+          ],
         };
 
         const row = sheet.addRow([
@@ -207,9 +193,8 @@ function addDomainSheets(
           thenCell,
           "N/A",
           "Manual",
-          ""
+          "",
         ]);
-
 
         styleStepCells(row);
         applyExecutionDropdowns(row);
@@ -221,7 +206,6 @@ function addDomainSheets(
         isFirstRow = false;
       }
     }
-
   }
 }
 
@@ -232,13 +216,13 @@ function addDomainSheets(
 function addMetadataHeader(
   sheet: ExcelJS.Worksheet,
   features: FeatureReport[],
-  config?: any
+  config?: any,
 ): number {
   const feature = features[0];
   const allTags = new Set<string>();
 
   for (const f of features) {
-    (f.tags || []).forEach(t => allTags.add(t));
+    (f.tags || []).forEach((t) => allTags.add(t));
 
     for (const s of f.scenarios || []) {
       (s.tags || []).forEach((t: any) => allTags.add(t));
@@ -252,15 +236,12 @@ function addMetadataHeader(
   const tags = Array.from(allTags);
 
   // ✅ FILTER ONLY DOMAIN/SUBDOMAIN TAGS
-  const filteredTags = tags.filter(tag =>
-    !tag.startsWith("@domain:") &&
-    !tag.startsWith("@subdomain:")
+  const filteredTags = tags.filter(
+    (tag) => !tag.startsWith("@domain:") && !tag.startsWith("@subdomain:"),
   );
 
   // ✅ fallback so Excel isn’t empty
-  const tagText = filteredTags.length > 0
-    ? filteredTags.join(", ")
-    : "(none)";
+  const tagText = filteredTags.length > 0 ? filteredTags.join(", ") : "(none)";
 
   const context = {
     product: config?.product ?? "",
@@ -268,12 +249,11 @@ function addMetadataHeader(
     environment: config?.environment ?? "",
     release: config?.release ?? "",
     buildNumber: config?.buildNumber ?? "",
-    team: config?.team ?? ""
+    team: config?.team ?? "",
   };
 
   const startRow = sheet.rowCount + 1;
   const featureName = feature?.name ?? "";
-
 
   // ✅ Row 1
   const featureRow = sheet.addRow(["Feature", featureName, ""]);
@@ -281,13 +261,13 @@ function addMetadataHeader(
   featureRow.getCell(1).font = {
     bold: true,
     size: 10,
-    name: "Nunito Sans"
+    name: "Nunito Sans",
   };
 
   featureRow.getCell(2).font = {
     bold: true,
     size: 10,
-    name: "Nunito Sans"
+    name: "Nunito Sans",
   };
 
   // ✅ Merge B + C
@@ -296,20 +276,19 @@ function addMetadataHeader(
   // ✅ alignment for BOTH cells
   featureRow.getCell(1).alignment = {
     horizontal: "left",
-    vertical: "middle"
+    vertical: "middle",
   };
 
   featureRow.getCell(2).alignment = {
     wrapText: true,
     horizontal: "left",
-    vertical: "middle"
+    vertical: "middle",
   };
 
   // ✅ background (optional but matches your style)
   featureRow.getCell(1).fill = solid("FFD9E1F2");
   //featureRow.getCell(2).fill = solid("FFD9E1F2");
   featureRow.getCell(2).fill = solid("FFF2F2F2");
-
 
   // ✅ dynamic height for long titles
   addMetaRow(sheet, "Feature ID", feature?.featureId ?? "");
@@ -328,8 +307,9 @@ function addMetadataHeader(
       day: "numeric",
       month: "long",
       year: "numeric",
-      timeZone: "UTC"
-    }));
+      timeZone: "UTC",
+    }),
+  );
 
   for (let r = startRow; r <= sheet.rowCount; r++) {
     const row = sheet.getRow(r);
@@ -337,7 +317,7 @@ function addMetadataHeader(
     // ✅ row height
     featureRow.height = 18;
 
-    row.eachCell(cell => {
+    row.eachCell((cell) => {
       cell.alignment = {
         horizontal: "left",
         vertical: "middle",
@@ -350,17 +330,15 @@ function addMetadataHeader(
     row.getCell(1).fill = solid("FFD9E1F2");
     row.getCell(1).alignment = {
       horizontal: "left",
-      vertical: "middle"
+      vertical: "middle",
     };
     row.getCell(5).alignment = {
       wrapText: true,
-      vertical: "top"
+      vertical: "top",
     };
-
   }
 
   sheet.addRow([]);
-
 
   return sheet.rowCount + 1;
 }
@@ -372,11 +350,10 @@ function scenarioDividerBorder(): Partial<ExcelJS.Borders> {
   return {
     top: {
       style: "thin",
-      color: { argb: "FFBFBFBF" } // ✅ mid grey
-    }
+      color: { argb: "FFBFBFBF" }, // ✅ mid grey
+    },
   };
 }
-
 
 function applyExecutionDropdowns(row: ExcelJS.Row) {
   // Result column (6)
@@ -387,7 +364,7 @@ function applyExecutionDropdowns(row: ExcelJS.Row) {
   };
   row.getCell(6).alignment = {
     horizontal: "center",
-    vertical: "middle"
+    vertical: "middle",
   };
   row.getCell(6).font = { size: 10, name: "Nunito Sans" };
   row.getCell(6).fill = solid("FFFABF8F");
@@ -400,16 +377,14 @@ function applyExecutionDropdowns(row: ExcelJS.Row) {
   };
   row.getCell(7).alignment = {
     horizontal: "center",
-    vertical: "middle"
+    vertical: "middle",
   };
   row.getCell(7).font = { size: 10, name: "Nunito Sans" };
   row.getCell(7).fill = solid("FFFABF8F");
 }
 
 function cleanScenarioName(title: string) {
-  return cleanText(
-    title.split("→").pop()?.trim() ?? title
-  );
+  return cleanText(title.split("→").pop()?.trim() ?? title);
 }
 
 function solid(argb: string): ExcelJS.FillPattern {
@@ -449,7 +424,6 @@ function cleanSheetName(name: string, used: Set<string>): string {
 }
 
 function autoHeight(row: ExcelJS.Row, baseWidth = 100) {
-
   // tweak if needsed
   // const approxCharsPerLine = colWidth * 1.2;
   // row.height = maxLines * 15;
@@ -459,12 +433,16 @@ function autoHeight(row: ExcelJS.Row, baseWidth = 100) {
 
   let maxLines = 1;
 
-  row.eachCell({ includeEmpty: true }, cell => {
+  row.eachCell({ includeEmpty: true }, (cell) => {
     let text = "";
 
     if (typeof cell.value === "string") {
       text = cell.value;
-    } else if (cell.value && typeof cell.value === "object" && "richText" in cell.value) {
+    } else if (
+      cell.value &&
+      typeof cell.value === "object" &&
+      "richText" in cell.value
+    ) {
       text = cell.value.richText
         .map((r: any) => r.text)
         .join(" ")
@@ -472,7 +450,9 @@ function autoHeight(row: ExcelJS.Row, baseWidth = 100) {
     }
 
     // ✅ estimate wrapping (based on column width)
-    const colWidth = cell.col ? row.worksheet.getColumn(cell.col).width || 20 : 20;
+    const colWidth = cell.col
+      ? row.worksheet.getColumn(cell.col).width || 20
+      : 20;
 
     const approxCharsPerLine = colWidth * 1.0; // tuning factor
     const lines = Math.ceil(text.length / approxCharsPerLine);
@@ -491,11 +471,7 @@ function safeName(name: string) {
   return name.replace(/[^\w\-]/g, "").toLowerCase();
 }
 
-function addMetaRow(
-  sheet: ExcelJS.Worksheet,
-  label: string,
-  value: string
-) {
+function addMetaRow(sheet: ExcelJS.Worksheet, label: string, value: string) {
   const row = sheet.addRow([label, value, ""]);
 
   // ✅ merge B + C
@@ -506,13 +482,13 @@ function addMetaRow(
 
   row.getCell(1).alignment = {
     horizontal: "left",
-    vertical: "middle"
+    vertical: "middle",
   };
 
   row.getCell(2).alignment = {
     horizontal: "left",
     vertical: "top",
-    wrapText: true
+    wrapText: true,
   };
 
   // ✅ LIGHT FILL on VALUE cell only
@@ -523,21 +499,21 @@ function addMetaRow(
 }
 
 function styleStepCells(row: ExcelJS.Row) {
-  [1].forEach(col => {
+  [1].forEach((col) => {
     row.getCell(col).alignment = {
       vertical: "middle",
       horizontal: "center",
-      wrapText: true
+      wrapText: true,
     };
     row.getCell(col).font = { size: 10, name: "Nunito Sans", bold: true };
     row.getCell(col).fill = solid("FFD9D9D9");
   });
 
-  [2].forEach(col => {
+  [2].forEach((col) => {
     row.getCell(col).alignment = {
       vertical: "top",
       horizontal: "left",
-      wrapText: true
+      wrapText: true,
     };
     row.getCell(col).font = { size: 10, name: "Nunito Sans", bold: true };
     row.getCell(col).fill = solid("FFD9D9D9");
@@ -547,18 +523,17 @@ function styleStepCells(row: ExcelJS.Row) {
   row.getCell(4).fill = solid("FFFFF2CC"); // WHEN = yellow
   row.getCell(5).fill = solid("FFDFF0D8"); // THEN = green
 
-  [2, 3, 4, 5].forEach(col => {
+  [2, 3, 4, 5].forEach((col) => {
     row.getCell(col).alignment = {
       ...(row.getCell(col).alignment || {
         vertical: "top",
         horizontal: "left",
-        indent: 1
+        indent: 1,
       }),
-      wrapText: true
+      wrapText: true,
     };
     row.getCell(col).font = { size: 10, name: "Nunito Sans" };
   });
-
 }
 
 function addExecutionSummarySheet(workbook: ExcelJS.Workbook) {
@@ -575,25 +550,25 @@ function addExecutionSummarySheet(workbook: ExcelJS.Workbook) {
     cell.font = {
       bold: true,
       size: 10,
-      name: "Nunito Sans"
+      name: "Nunito Sans",
     };
 
     cell.fill = {
       type: "pattern",
       pattern: "solid",
-      fgColor: { argb: "FFD9E1F2" }
+      fgColor: { argb: "FFD9E1F2" },
     };
 
     cell.border = {
       top: { style: "thin" },
       bottom: { style: "thin" },
       left: { style: "thin" },
-      right: { style: "thin" }
+      right: { style: "thin" },
     };
 
     cell.alignment = {
       vertical: "middle",
-      horizontal: "left"
+      horizontal: "left",
     };
   });
 
@@ -603,11 +578,7 @@ function addExecutionSummarySheet(workbook: ExcelJS.Workbook) {
   sheet.addRow(["Passed", { formula: "SUM(C8:C100)" }]);
   sheet.addRow(["Failed", { formula: "SUM(D8:D100)" }]);
 
-
-  const passRow = sheet.addRow([
-    "Pass %",
-    { formula: "IFERROR(C4/B4,0)" }
-  ]);
+  const passRow = sheet.addRow(["Pass %", { formula: "IFERROR(C4/B4,0)" }]);
 
   passRow.getCell(2).numFmt = "0.00%";
   sheet.addRow([]);
@@ -627,7 +598,7 @@ function addExecutionSummarySheet(workbook: ExcelJS.Workbook) {
       { formula: totalFormula },
       { formula: passFormula },
       { formula: failFormula },
-      { formula: `IFERROR(${passFormula}/(${totalFormula}),0)` }
+      { formula: `IFERROR(${passFormula}/(${totalFormula}),0)` },
     ]);
     row.eachCell((cell) => {
       cell.font = { name: "Nunito Sans", size: 10 };
@@ -636,16 +607,24 @@ function addExecutionSummarySheet(workbook: ExcelJS.Workbook) {
         top: { style: "thin" },
         bottom: { style: "thin" },
         left: { style: "thin" },
-        right: { style: "thin" }
+        right: { style: "thin" },
       };
 
       cell.alignment = {
         vertical: "middle",
-        horizontal: "center"
+        horizontal: "center",
       };
     });
-    row.getCell(3).fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FFDFF0D8" } };
-    row.getCell(4).fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FFFCE4D6" } };
+    row.getCell(3).fill = {
+      type: "pattern",
+      pattern: "solid",
+      fgColor: { argb: "FFDFF0D8" },
+    };
+    row.getCell(4).fill = {
+      type: "pattern",
+      pattern: "solid",
+      fgColor: { argb: "FFFCE4D6" },
+    };
 
     row.getCell(5).numFmt = "0.00%";
     sheet.columns = [

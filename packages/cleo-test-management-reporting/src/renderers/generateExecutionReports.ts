@@ -39,6 +39,9 @@ export async function generateExecutionReports(
     return [];
   }
 
+  let excelReportCount = 0;
+  let jiraSummaryCount = 0;
+
   // ✅ Step A: collect rows from mochawesome
   const rows: any[] = [];
 
@@ -416,13 +419,18 @@ export async function generateExecutionReports(
       workbook.worksheets.unshift(summary);
     }
     await workbook.xlsx.writeFile(filePath);
-    console.log(`✅ Mochawesome Excel: ${filePath}`);
+    excelReportCount++;
 
     const jiraContent = buildJiraSummary(domainRows);
     const jiraPath = path.join(dir, `${name}.jira.txt`);
     fs.writeFileSync(jiraPath, jiraContent);
-    console.log(`✅ Jira Summary: ${jiraPath}`);
+    jiraSummaryCount++;
   }
+
+  console.log("✅ Execution reports generated");
+  console.log(`   Excel reports: ${excelReportCount}`);
+  console.log(`   Jira summaries: ${jiraSummaryCount}`);
+
   // ✅ ================================
   // ✅ ✅ OVERALL EXECUTION DASHBOARD
   // ✅ ================================
@@ -444,7 +452,7 @@ export async function generateExecutionReports(
   await overviewWorkbook.xlsx.writeFile(overviewPath);
 
   // 6. Log
-  console.log(`✅ Overview Dashboard: ${overviewPath}`);
+  console.log("✅ Overview dashboard generated");
 
   return dedupedRows;
 }

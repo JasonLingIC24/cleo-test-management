@@ -36,8 +36,7 @@ export function writeCodemodOutput(result: any, inputPath: string) {
 
     fs.writeFileSync(outputPath, content, "utf8");
   }
-
-  console.log(`✅ Codemod output written to: ${outputRoot}`);
-
-  console.log(`📊 Files changed: ${changedCount}`);
+  console.log("✅ Codemod complete");
+  console.log(`   Output: ${outputRoot}`);
+  console.log(`   Files changed: ${changedCount}`);
 }
