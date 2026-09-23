@@ -15,6 +15,7 @@ export function buildPipelineExecutionOptions(
     refreshArtifacts: commandOptions.refreshArtifacts,
     publish: commandOptions.publish,
     jiraKey: commandOptions.jira,
+    sourceTag: commandOptions.tag,
     releaseKeys:
       releaseKeys && releaseKeys.length > 0 ? releaseKeys : undefined,
   };

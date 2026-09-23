@@ -13,7 +13,7 @@ export async function runPhase1(runtimeContext: RuntimeContext) {
 
   console.log("🛠️ Prepare - Validation & Codemod");
 
-  await runCodemodWorkflow();
+  await runCodemodWorkflow(runtimeContext);
 
   console.log("✅ Prepare complete\n");
 }

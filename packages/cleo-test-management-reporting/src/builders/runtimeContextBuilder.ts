@@ -15,6 +15,8 @@ export function buildRuntimeContext(
 
   const source = executionOptions.runId !== undefined ? "github" : "local";
 
+  console.log(executionOptions.sourceTag);
+
   return {
     source,
     version,
@@ -26,5 +28,6 @@ export function buildRuntimeContext(
     publish,
     jiraKey: executionOptions.jiraKey,
     releaseKeys: executionOptions.releaseKeys,
+    sourceTag: executionOptions.sourceTag,
   };
 }

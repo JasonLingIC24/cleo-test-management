@@ -23,6 +23,7 @@ export function registerPipelineCommands(program: Command) {
     .option("--prepare", "Run preparation workflow")
     .option("--analyse", "Run analysis workflow")
     .option("--release", "Run release workflow")
+    .option("--tag <tag>", "Override source git tag")
     .option("--all", "Run all phases")
     .option("--version <name>", "Release version")
     .option("--runId <id>", "GitHub workflow run id")
@@ -37,6 +38,9 @@ export function registerPipelineCommands(program: Command) {
       try {
         const config = getConfig();
         const executionOptions = buildPipelineExecutionOptions(opts);
+
+        console.log(executionOptions);
+
         const runtimeContext = buildRuntimeContext(executionOptions, config);
         const publishOptions = buildPublishOptions(opts);
 

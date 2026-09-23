@@ -6,6 +6,7 @@ export interface RuntimeContext {
   environment: string;
   owner?: string;
   repo?: string;
+  sourceTag?: string;
   runId?: number;
   refreshArtifacts?: boolean;
   publish: boolean;

@@ -4,9 +4,10 @@ import { runCodemod } from "cleo-cypress-codemod";
 import { validateCodemodFiles } from "./codemodValidationService.js";
 import { writeCodemodOutput } from "./codemodOutputService.js";
 import { acquireVersionedTests } from "./sourceAcquisitionService.js";
+import { RuntimeContext } from "../models/runtimeContext.js";
 
-export async function runCodemodWorkflow() {
-  await acquireVersionedTests();
+export async function runCodemodWorkflow(runtimeContext?: RuntimeContext) {
+  await acquireVersionedTests(runtimeContext);
 
   const inputPath = configAccess.getVersionedCypressSpecs();
   const files = resolveFiles(inputPath);

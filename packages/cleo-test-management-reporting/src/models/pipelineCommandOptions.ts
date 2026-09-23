@@ -5,6 +5,7 @@ export interface PipelineCommandOptions {
   prepare?: boolean;
   analyse?: boolean;
   release?: boolean;
+  tag?: string;
   all?: boolean;
   version?: string;
   runId?: string;
