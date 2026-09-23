@@ -7,15 +7,10 @@ export function buildRuntimeContext(
   config: CleoConfig,
 ): RuntimeContext {
   const version = executionOptions.version ?? config.release.version;
-
   const environment =
     executionOptions.environment ?? config.release.environment;
-
   const publish = executionOptions.publish ?? false;
-
   const source = executionOptions.runId !== undefined ? "github" : "local";
-
-  console.log(executionOptions.sourceTag);
 
   return {
     source,

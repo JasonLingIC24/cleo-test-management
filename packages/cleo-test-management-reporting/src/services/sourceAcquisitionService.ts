@@ -1,13 +1,16 @@
 import fs from "fs";
 import path from "path";
 import { configAccess } from "./configAccessService.js";
-import { getSourceTag, tagExists } from "./gitSourceService.js";
 import {
+  getRepoPath,
+  getSourceTag,
+  tagExists,
   getCurrentBranch,
   checkoutTag,
   checkoutBranch,
 } from "./gitSourceService.js";
 import { RuntimeContext } from "../models/runtimeContext.js";
+import { execSync } from "child_process";
 
 export async function acquireVersionedTests(runtimeContext?: RuntimeContext) {
   const sourceRepo = process.env.ELEVATE_MONOREPO;

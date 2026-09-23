@@ -38,9 +38,6 @@ export function registerPipelineCommands(program: Command) {
       try {
         const config = getConfig();
         const executionOptions = buildPipelineExecutionOptions(opts);
-
-        console.log(executionOptions);
-
         const runtimeContext = buildRuntimeContext(executionOptions, config);
         const publishOptions = buildPublishOptions(opts);
 
