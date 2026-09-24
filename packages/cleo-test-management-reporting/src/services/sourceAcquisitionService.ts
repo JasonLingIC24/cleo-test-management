@@ -2,20 +2,44 @@ import fs from "fs";
 import path from "path";
 import { configAccess } from "./configAccessService.js";
 import {
-  getRepoPath,
   getSourceTag,
+  getPreviousTag,
   tagExists,
   getCurrentBranch,
   checkoutTag,
   checkoutBranch,
 } from "./gitSourceService.js";
 import { RuntimeContext } from "../models/runtimeContext.js";
-import { execSync } from "child_process";
+import { getChangedFiles } from "./changeAnalysisService.js";
 
 export async function acquireVersionedTests(runtimeContext?: RuntimeContext) {
   const sourceRepo = process.env.ELEVATE_MONOREPO;
   const tag = getSourceTag(runtimeContext?.sourceTag);
+  const previousTag = getPreviousTag(tag);
+
   console.log(`🔖 Source tag: ${tag}`);
+
+  if (previousTag) {
+    const changes = getChangedFiles(previousTag, tag);
+
+    console.log(`🔖 Previous tag: ${previousTag}`);
+    console.log("\n📈 Change Analysis");
+    console.log(`\n   Changed files: ${changes.changedFiles.length}`);
+    console.log(`   DevOps files: ${changes.devopsFiles.length}`);
+    console.log(`   Frontend files: ${changes.frontendFiles.length}`);
+    console.log(`   Backend files: ${changes.backendFiles.length}`);
+    console.log(`   Cypress files: ${changes.cypressFiles.length}`);
+    console.log(`   Other files: ${changes.otherFiles.length}`);
+
+    const categorisedTotal =
+      changes.backendFiles.length +
+      changes.frontendFiles.length +
+      changes.cypressFiles.length +
+      changes.devopsFiles.length +
+      changes.otherFiles.length;
+
+    console.log(`\n   Categorised files: ${categorisedTotal}`);
+  }
 
   if (!sourceRepo) {
     throw new Error("ELEVATE_MONOREPO environment variable not configured");
@@ -24,7 +48,7 @@ export async function acquireVersionedTests(runtimeContext?: RuntimeContext) {
   if (!tagExists(tag)) {
     throw new Error(`Release tag not found: ${tag}`);
   }
-  console.log(`✅ Verified source tag: ${tag}`);
+  console.log(`\n✅ Verified source tag: ${tag}`);
 
   const sourceTests = path.join(
     sourceRepo,

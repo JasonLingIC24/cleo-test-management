@@ -33,6 +33,27 @@ export function getCurrentBranch(): string {
   }).trim();
 }
 
+export function getPreviousTag(currentTag: string): string | undefined {
+  const repoPath = getRepoPath();
+
+  const output = execSync(`git -C "${repoPath}" tag --sort=version:refname`, {
+    encoding: "utf8",
+  });
+
+  const tags = output
+    .split("\n")
+    .map((t) => t.trim())
+    .filter(Boolean);
+
+  const currentIndex = tags.indexOf(currentTag);
+
+  if (currentIndex <= 0) {
+    return undefined;
+  }
+
+  return tags[currentIndex - 1];
+}
+
 export function checkoutTag(tag: string): void {
   const repoPath = getRepoPath();
   execSync(`git -C "${repoPath}" checkout ${tag}`, { stdio: "pipe" });
