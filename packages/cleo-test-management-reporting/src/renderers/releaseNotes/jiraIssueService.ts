@@ -1,6 +1,7 @@
 import pLimit from "p-limit";
 import { getIssue } from "../../services/jiraClient.js";
 import type { JiraConfig, ReleaseItem, NoteType } from "../../types/jira.js";
+import { extractJiraText } from "../../services/jiraAdfParserService.js";
 
 function classify(jiraType: string): NoteType {
   const type = jiraType.toLowerCase();
@@ -43,29 +44,10 @@ export async function fetchReleaseItems(
   });
 }
 
-function extractText(adf: any): string {
-  if (!adf) return "";
-
-  let text = "";
-
-  function walk(node: any) {
-    if (typeof node.text === "string") {
-      text += node.text + " ";
-    }
-
-    if (Array.isArray(node.content)) {
-      node.content.forEach(walk);
-    }
-  }
-
-  walk(adf);
-  return text.trim();
-}
-
 function buildDetailedSummary(title: string, description: any): string {
   const cleanTitle = title.replace(/\[.*?\]/g, "").trim();
 
-  const descText = extractText(description);
+  const descText = extractJiraText(description);
 
   if (!descText) {
     return cleanTitle;

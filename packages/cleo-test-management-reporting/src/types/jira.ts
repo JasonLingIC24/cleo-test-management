@@ -17,13 +17,19 @@ export interface JiraComponent {
 }
 
 export interface JiraApiIssueResponse {
-  fields?: {
+  fields: {
     summary?: string;
     description?: any;
     issuetype?: {
       name?: string;
     };
     components?: JiraComponent[];
+    parent?: {
+      key: string;
+      fields?: {
+        summary?: string;
+      };
+    };
   };
 }
 

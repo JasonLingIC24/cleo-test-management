@@ -9,6 +9,7 @@ export type ChangeAnalysis = {
   backendFiles: string[];
   frontendFiles: string[];
   cypressFiles: string[];
+  mockServerFiles: string[];
   otherFiles: string[];
 };
 
@@ -30,7 +31,9 @@ export function getChangedFiles(
 
   const devopsFiles = changedFiles.filter((file) => file.startsWith("devops/"));
 
-  const frontendFiles = changedFiles.filter((file) => file.includes("/src/"));
+  const frontendFiles = changedFiles.filter((file) =>
+    file.startsWith("frontend/"),
+  );
 
   const backendFiles = changedFiles.filter((file) =>
     file.startsWith("backend/"),
@@ -40,12 +43,17 @@ export function getChangedFiles(
     file.includes("cypress/tests/"),
   );
 
+  const mockServerFiles = changedFiles.filter((file) =>
+    file.startsWith("mockserver/"),
+  );
+
   const otherFiles = changedFiles.filter(
     (file) =>
       !devopsFiles.includes(file) &&
       !backendFiles.includes(file) &&
       !frontendFiles.includes(file) &&
-      !cypressFiles.includes(file),
+      !cypressFiles.includes(file) &&
+      !mockServerFiles.includes(file),
   );
 
   return {
@@ -56,6 +64,7 @@ export function getChangedFiles(
     frontendFiles,
     backendFiles,
     devopsFiles,
+    mockServerFiles,
     otherFiles,
   };
 }

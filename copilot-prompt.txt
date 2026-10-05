@@ -1,0 +1,319 @@
+Cleo Test Management Reporting - Full Context
+Overview
+
+Cleo Test Management is a TypeScript monorepo that supports software delivery, test reporting, release reporting, governance and quality assurance activities for NHS-facing products and services.
+
+The platform started as a test reporting solution but has evolved into a delivery intelligence and release management platform.
+
+The long-term vision is:
+
+Plain Text
+Source Code
+↓
+Git Analysis
+ 
+Jira
+↓
+Delivery Intelligence
+ 
+Test Results
+↓
+Quality Intelligence
+ 
+Release Intelligence
+↓
+Release Notes
+ 
+Assurance Intelligence
+↓
+SCAL / Compliance Reports
+ 
+Management Reporting
+↓
+Stakeholder Reports
+Show more lines
+Current Architecture
+Source Acquisition Phase
+
+Acquires information from:
+
+Plain Text
+Git Repository
+Jira
+Test Results
+Manual Testing
+GitHub Actions
+Generated Reports
+Show more lines
+
+Services:
+
+Plain Text
+gitSourceService
+jiraClient
+jiraReleaseService
+jiraSprintService
+jiraVersionService
+githubArtifactService
+githubRunDownloadService
+Show more lines
+
+Outputs:
+
+Plain Text
+Source datasets
+Runtime context
+Release scope
+Show more lines
+Delivery Intelligence Phase
+
+Analyses code changes and commit activity.
+
+Services:
+
+Plain Text
+changeAnalysisService
+commitAnalysisService
+commitClassificationService
+jiraCommitCorrelationService
+jiraReleaseEnrichmentService
+jiraReleaseComparisonService
+Show more lines
+
+Builds:
+
+Plain Text
+jira-release-analysis.json
+Show more lines
+
+Containing:
+
+Plain Text
+Features
+Fixes
+Tests
+Governance Issues
+Invalid Jira References
+Release Traceability
+Show more lines
+Test Intelligence Phase
+
+Processes:
+
+Plain Text
+Backend results
+Frontend results
+Cypress results
+Manual test results
+Show more lines
+
+Services:
+
+Plain Text
+testResultsAggregator
+resultsAggregationService
+testSummaryReportService
+Show more lines
+
+Outputs:
+
+Plain Text
+bug-metrics.json
+bug-summary.json
+complete-test-results.json
+ 
+elevate-{version}-test-summary-report.docx
+Show more lines
+
+Audience:
+
+Plain Text
+QA Leads
+Test Managers
+Release Managers
+Show more lines
+Release Intelligence Phase
+
+Converts delivery analysis into business-friendly release information.
+
+Flow:
+
+Plain Text
+jira-release-analysis.json
+↓
+ 
+release-narratives.json
+↓
+ 
+release-themes.json
+↓
+ 
+release-notes.docx
+Show more lines
+Release Narratives
+
+Model:
+
+TypeScript
+ReleaseNarrative
+Show more lines
+
+Purpose:
+
+Plain Text
+Convert Jira issues into meaningful change narratives.
+Show more lines
+
+Contains:
+
+Plain Text
+Jira Story
+Narrative
+Commit Summary
+Parent Relationships
+Show more lines
+Release Themes
+
+Model:
+
+TypeScript
+ReleaseTheme
+Show more lines
+
+Current shape:
+
+TypeScript
+ReleaseTheme {
+key: string;
+title: string;
+capability: string;
+ 
+themeNarrative: string;
+stakeholderNarrative: string;
+ 
+jiraKeys: string[];
+ 
+commitCount: number;
+featureCount: number;
+fixCount: number;
+ 
+userFacingBullets: string[];
+ 
+narratives: ReleaseNarrative[];
+}
+`
+Show more lines
+
+Purpose:
+
+Plain Text
+Group multiple Jira changes into user-facing capabilities.
+Show more lines
+
+Example:
+
+Plain Text
+111 Case Form Changes
+NHS Pathways Integration
+Patient Event Messaging
+Ambulance Validation
+Show more lines
+Release Documentation
+
+Current outputs:
+
+Plain Text
+User Release Notes
+Show more lines
+
+Audience:
+
+Plain Text
+Operational Users
+Clinical Users
+NHS 111 Advisors
+Service Users
+Show more lines
+
+Required content:
+
+Plain Text
+Theme Title
+ 
+Stakeholder Narrative
+ 
+Key Changes
+Show more lines
+
+Must not contain:
+
+Plain Text
+Jira Keys
+Commit Messages
+API Endpoints
+Swagger
+Payloads
+Technical Design
+Show more lines
+Planned Stakeholder Release Report
+
+Separate document.
+
+Audience:
+
+Plain Text
+Product Owners
+Service Managers
+Delivery Leads
+Operational Managers
+Show more lines
+
+Contains:
+
+Plain Text
+Release Summary
+Delivery Metrics
+Release Themes
+Jira Traceability
+Governance Issues
+Feature Counts
+Fix Counts
+Known Risks
+Show more lines
+
+This is intentionally separate from user release notes.
+
+Existing Document Outputs
+
+Generated today:
+
+Plain Text
+elevate-{version}-release-notes.docx
+ 
+elevate-{version}-test-summary-report.docx
+ 
+elevate-{version}-release-bundle.zip
+Show more lines
+
+Bundle includes:
+
+Plain Text
+Docs
+JSON Reports
+Traceability Information
+Show more lines
+Governance Capability
+
+Current governance checks already exist.
+
+Examples:
+
+Plain Text
+Invalid Jira References
+EVA-000
+Missing Jira Links
+Release Traceability Gaps
+
+Show more lines
+
+These are used during release preparation before publication.

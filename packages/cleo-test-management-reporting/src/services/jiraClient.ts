@@ -36,7 +36,7 @@ function getHeaders(config: JiraConfig, extras: Record<string, string> = {}) {
 
 export async function getIssue(key: string, config: JiraConfig) {
   const res = await fetch(
-    `${config.baseUrl}/rest/api/3/issue/${key}?fields=summary,description,issuetype,components`,
+    `${config.baseUrl}/rest/api/3/issue/${key}?fields=summary,description,issuetype,components,parent`,
     {
       headers: getHeaders(config),
     },
@@ -50,9 +50,13 @@ export async function getIssue(key: string, config: JiraConfig) {
     title: data.fields?.summary || "No title",
     description: data.fields?.description,
     type: data.fields?.issuetype?.name || "Unknown",
-
-    // ✅ NEW
     components: data.fields?.components?.map((c: any) => c.name) || [],
+    parent: data.fields?.parent
+      ? {
+          key: data.fields.parent.key,
+          title: data.fields.parent.fields?.summary ?? "Unknown Parent",
+        }
+      : undefined,
   };
 }
 
@@ -71,6 +75,7 @@ export async function searchIssuesByVersion(
   let allIssues: string[] = [];
 
   while (true) {
+    console.log("");
     console.log(`🔎 Querying Jira for version: "${versionName}"`);
     console.log(`🔍 Fetching Jira issues from ${startAt}`);
 
@@ -272,4 +277,19 @@ export async function searchIssuesWithFields(
   console.log(`✅ Total Issues Retrieved: ${allIssues.length}`);
 
   return allIssues;
+}
+
+export async function discoverVersions(config: JiraConfig): Promise<string[]> {
+  const issues = await searchIssues(
+    "project = EVA AND fixVersion IS NOT EMPTY",
+    config,
+  );
+
+  const versions = new Set<string>();
+
+  issues.forEach((issue: any) => {
+    (issue.fields?.fixVersions ?? []).forEach((v: any) => versions.add(v.name));
+  });
+
+  return [...versions].sort();
 }

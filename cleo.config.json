@@ -30,7 +30,7 @@
     "logo": "cleo-logo.png"
   },
   "release": {
-    "version": "26.14.0",
+    "version": "26.19.0",
     "environment": "Staging",
     "release": "R1",
     "buildNumber": "2026.08.17.001"

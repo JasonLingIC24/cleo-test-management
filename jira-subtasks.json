@@ -1,0 +1,46 @@
+[
+  {
+    "summary": "PDS SCAL - ITK Distribution Envelope Requirements",
+    "description": "TRUD Document\n\nITK Distribution Envelope Requirements\n\nAreas\n\n- Distribution Envelope Header–General Requirements (7)\n- Distribution Envelope Header–Payload Requirements (2)\n\nRequirements\n\n9\n\nMust Requirements\n\n8\n\nShould Requirements\n\n1\n\nMay Requirements\n\n0\n\nAcceptance Criteria\n\n- All requirements reviewed\n- Compliance status recorded\n- Evidence identified\n- Statements completed\n- Gaps documented\n- Ready for assurance review",
+    "issueType": "Sub-task",
+    "labels": [
+      "assurance",
+      "pds",
+      "scal"
+    ],
+    "parentIssue": "EVA-2583"
+  },
+  {
+    "summary": "PDS SCAL - ITK Client, Host and ITK Middleware Requirements",
+    "description": "TRUD Document\n\nITK Client, Host and ITK Middleware Requirements\n\nAreas\n\n- Reliability (2)\n- Supporting Infrastructure - Logging (2)\n- Supporting Infrastructure - Alerting (2)\n- Supporting Infrastructure - Time (3)\n- Supporting Infrastructure -Infrastructure Security (2)\n- Supporting Infrastructure -Application Specific (2)\n- Additional Modules - Sequencing (1)\n- Additional Modules - Information Governance - Application Location Shielding (3)\n- Additional Modules - Information Governance - Sealing (1)\n- Additional Modules - Information Governance -Application Cross Organisational Data Sharing (1)\n- Additional Modules - Information Governance -NHS Number (1)\n\nRequirements\n\n20\n\nMust Requirements\n\n15\n\nShould Requirements\n\n3\n\nMay Requirements\n\n2\n\nAcceptance Criteria\n\n- All requirements reviewed\n- Compliance status recorded\n- Evidence identified\n- Statements completed\n- Gaps documented\n- Ready for assurance review",
+    "issueType": "Sub-task",
+    "labels": [
+      "assurance",
+      "pds",
+      "scal"
+    ],
+    "parentIssue": "EVA-2583"
+  },
+  {
+    "summary": "PDS SCAL - Accreditation",
+    "description": "TRUD Document\n\nAccreditation\n\nAreas\n\n- Client Accreditation Requirement (1)\n\nRequirements\n\n1\n\nMust Requirements\n\n1\n\nShould Requirements\n\n0\n\nMay Requirements\n\n0\n\nAcceptance Criteria\n\n- All requirements reviewed\n- Compliance status recorded\n- Evidence identified\n- Statements completed\n- Gaps documented\n- Ready for assurance review",
+    "issueType": "Sub-task",
+    "labels": [
+      "assurance",
+      "pds",
+      "scal"
+    ],
+    "parentIssue": "EVA-2583"
+  },
+  {
+    "summary": "PDS SCAL - NHS111",
+    "description": "TRUD Document\n\nNHS111\n\nAreas\n\n- NHS 111 (1)\n\nRequirements\n\n1\n\nMust Requirements\n\n1\n\nShould Requirements\n\n0\n\nMay Requirements\n\n0\n\nAcceptance Criteria\n\n- All requirements reviewed\n- Compliance status recorded\n- Evidence identified\n- Statements completed\n- Gaps documented\n- Ready for assurance review",
+    "issueType": "Sub-task",
+    "labels": [
+      "assurance",
+      "pds",
+      "scal"
+    ],
+    "parentIssue": "EVA-2583"
+  }
+]

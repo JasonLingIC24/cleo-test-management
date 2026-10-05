@@ -12,7 +12,7 @@ export async function runCodemodWorkflow(runtimeContext?: RuntimeContext) {
   const inputPath = configAccess.getVersionedCypressSpecs();
   const files = resolveFiles(inputPath);
 
-  console.log("🔍 Validating Cypress tests...");
+  console.log("\n🔍 Validating Cypress tests...");
 
   await validateCodemodFiles(files, inputPath);
 

@@ -1,0 +1,554 @@
+[
+  {
+    "id": "distribution-envelope-header-general-requirements",
+    "title": "Distribution Envelope Header–General Requirements",
+    "framework": "RCS",
+    "status": "not-started",
+    "requirementCount": 7,
+    "mustCount": 6,
+    "shouldCount": 1,
+    "mayCount": 0,
+    "requirements": [
+      {
+        "trudDocument": "ITK Distribution Envelope Requirements",
+        "id": "COR-DEH-01",
+        "area": "Distribution Envelope Header–General Requirements",
+        "title": "The Distribution Envelope Header “service” attribute MUST contain the value specified within the respective domain message specification.",
+        "description": "RCS provides this in responses, but examples do not include it in requests, and it is not mandated in validation. \nFor example (response):\n<header service=\"urn:nhs-itk:services:201005:NHS111RepeatCallerSyncQueryResp-v1-0Response\">\n\nRCS Query examples do use manifest/manifestitem@profileid in the DistributionEnvelope\nQuery:\n        <manifest count=\"1\">\n          <manifestitem id=\"uuid_7D6F23E0-AE1A-11DB-9808-B18E1E0994BB\" mimetype=\"text/xml\" profileid=\"urn:nhs-en:profile:nhs111RepeatCallerQuery-v1-0\"/>\n        </manifest>\n\nSave call:\n            <manifest count=\"1\">\n               <manifestitem id=\"uuid_47f5cfee-69e2-4e81-a196-5654b13840d6\" mimetype=\"text/xml\" profileid=\"urn:nhs-en:profile:nhs111CDADocument-v2-0\"/>\n            </manifest>",
+        "applicability": "Always applies to systems creating  the distribution envelope.",
+        "requirementType": "Must",
+        "guidance": "EVIDENCE: Execute all tests marked as \"applicable\"  after filters have been applied on the Testcases Index  tab. \n-----------------------------------------------------------------------------------------------------------------------\nSupplier Comment: \n-----------------------------------------------------------------------------------------------------------------------\nAccreditation Team Comment:",
+        "framework": "RCS",
+        "source": "spreadsheet"
+      },
+      {
+        "trudDocument": "ITK Distribution Envelope Requirements",
+        "id": "COR-DEH-02",
+        "area": "Distribution Envelope Header–General Requirements",
+        "title": "The Distribution Envelope Header manifestitem id attribute MUST be populated with a unique uuid for each end-to-end distribution request",
+        "description": "The maifestitem id attribute MUST be prefixed with uuid_ and the UUID formatted into 5 hyphen-separated groups of hexadecimal digits having 8, 4, 4, 4, and 12 places respectively, and the hexadecimal digits A-F in UUIDs MUST be in upper case.",
+        "applicability": "Always applies to systems creating  the distribution envelope.",
+        "requirementType": "Must",
+        "guidance": "STATEMENT: Please provide a statement of compliance confirming that subsequent business workflow related messages each have different trackingids.   \n\nEVIDENCE: Execute all tests marked as \"applicable\"  after filters have been applied on the Testcases Index  tab. \n-----------------------------------------------------------------------------------------------------------------------\nSupplier Comment: \n-----------------------------------------------------------------------------------------------------------------------\nAccreditation Team Comment:",
+        "framework": "RCS",
+        "source": "spreadsheet"
+      },
+      {
+        "trudDocument": "ITK Distribution Envelope Requirements",
+        "id": "COR-DEH-03",
+        "area": "Distribution Envelope Header–General Requirements",
+        "title": "For services using the Distribution Envelope and requiring an Audit Identity then Service Clients MUST populate the Audit Identity of the originating user",
+        "description": "1\nSystems populating the auditIdentity MUST guarantee an authenticated relationship between the identity and a user or source system.\n2\nThis authentication SHOULD be strong authentication (e.g. smart card) but MUST at least be via personal login via a password created and maintained in a suitably-strong manner.\n3\n“Unattended” systems or those with no specific users MUST be secured. Whilst a remote system need not be able to resolve auditIdentity values directly, a populating system MUST be able to trace the source of a request to a specific local user or event.\n\nRCS Query example:\n            <auditIdentity>\n               <id uri=\"urn:nhs-uk:identity:ods:5L399\"/>\n            </auditIdentity>",
+        "applicability": "Always applies to systems creating  the distribution envelope.",
+        "requirementType": "Must",
+        "guidance": "EVIDENCE:Execute all tests marked as \"applicable\"  after filters have been applied on the Testcases Index  tab. \n-----------------------------------------------------------------------------------------------------------------------\nSupplier Comment: \n-----------------------------------------------------------------------------------------------------------------------\nAccreditation Team Comment:",
+        "framework": "RCS",
+        "source": "spreadsheet"
+      },
+      {
+        "trudDocument": "ITK Distribution Envelope Requirements",
+        "id": "COR-DEH-04",
+        "area": "Distribution Envelope Header–General Requirements",
+        "title": "Distribution Envelope Header “auditIdentity/id” element SHOULD contain a Toolkit identity URI",
+        "description": "1\nThe identity representation MUST consist of a printable ASCII string, conformant with the XML Schema anyURI data type (http://www.w3.org/TR/2004/REC-xmlschema-2-20041028/#anyURI). e.g. uri=\"urn:nhs-uk:identity:ods:rhm:team1:C\"\n2\nThe following prefix MUST be used to indicate a Toolkit urn:nhs-uk:identity:\n3\nFor a Toolkit identity: The remainder of the address MUST consist of an arbitrarily-long sequence of colon-delimited tokens. The tokens MUST represent a hierarchy with the highest level on the left and the lowest level on the right.\n4\nThe first token MUST identify a HSCIC approved naming authority.\n5\nThe second token MUST be a unique organisation identifier, allocated by that naming authority.\n6\nSubsequent token(s) MAY be locally allocated by the named organisation. That organisation MUST ensure that the uniqueness of the identity is preserved. Note that the precise content and meaning of this local identity information is not prescribed, rather each organisation MUST define their own internal identity namespace – based on their business operations and the entities that need to be identified.\n7\nIf the address is a non-Toolkit address then the “type” attribute MUST be populated with an OID to indicate the address type.\nNB: A Spine smartcard user role profile is another anticipated possibility which MAY be used.\nNB\nExample Toolkit Identity: urn:nhs-uk:identity:ods:REC:fbloggs \nNote that while the system recording the audit trail may not have direct access to the directory which provides details of the identified user, the initial organisational part of the identity will provide enough detail to enable enquiries to find these details out.\nRCS example: urn:nhs-uk:identity:ods:5L399",
+        "applicability": "Always applies to systems creating  the distribution envelope.",
+        "requirementType": "Should",
+        "guidance": "EVIDENCE:Execute all tests marked as \"applicable\"  after filters have been applied on the Testcases Index  tab. \n-----------------------------------------------------------------------------------------------------------------------\nSupplier Comment: \n-----------------------------------------------------------------------------------------------------------------------\nAccreditation Team Comment:",
+        "framework": "RCS",
+        "source": "spreadsheet"
+      },
+      {
+        "trudDocument": "ITK Distribution Envelope Requirements",
+        "id": "COR-DEH-05",
+        "area": "Distribution Envelope Header–General Requirements",
+        "title": "The Distribution Envelope Header “manifest” element MUST be used to contain information about the message payload(s)",
+        "description": "1\nThe “count” element of the manifest MUST record the number of “manifestitem” elements contained in the list\n\nRCS example:\n            <manifest count=\"1\">\n               <manifestitem id=\"uuid_47f5cfee-69e2-4e81-a196-5654b13840d6\" mimetype=\"text/xml\" profileid=\"urn:nhs-en:profile:nhs111CDADocument-v2-0\"/>\n            </manifest>",
+        "applicability": "Always applies to systems creating  the distribution envelope.",
+        "requirementType": "Must",
+        "guidance": "EVIDENCE:Execute all tests marked as \"applicable\"  after filters have been applied on the Testcases Index  tab. \n-----------------------------------------------------------------------------------------------------------------------\nSupplier Comment: \n-----------------------------------------------------------------------------------------------------------------------\nAccreditation Team Comment:",
+        "framework": "RCS",
+        "source": "spreadsheet"
+      },
+      {
+        "trudDocument": "ITK Distribution Envelope Requirements",
+        "id": "COR-DEH-06",
+        "area": "Distribution Envelope Header–General Requirements",
+        "title": "The Distribution Envelope Header “manifestitem” element MUST contain details of a single specific message payload",
+        "description": "1\nThe id attribute MUST be populated - this MUST contain an identifier that is unique within the message, and which matches the “id” attribute on the corresponding message payload which it describes.\n2\nThe mimetype attribute MUST be populated this MUST describe the mime type of the relevant payload (The valid mime types for use here will be defined on a service-by-service basis).\n3\nThe following attributes are optional Boolean flags which default to “false”. They MAY be populated if required: • metadata – set to “true” if this payload is a block of business metadata • compressed – set to “true” if the payload is compressed. (GZIP compression as per RFC 1952 (eg at http://tools.ietf.org/html/rfc1952) MUST be used) • encrypted – set to “true” if the payload is encrypted • base64 – set to “true” if the payload is base64 encoded\n\nRCS example:\n             <manifestitem id=\"uuid_47f5cfee-69e2-4e81-a196-5654b13840d6\" mimetype=\"text/xml\"",
+        "applicability": "Always applies to systems creating  the distribution envelope.",
+        "requirementType": "Must",
+        "guidance": "EVIDENCE:Execute all tests marked as \"applicable\"  after filters have been applied on the Testcases Index  tab. \n-----------------------------------------------------------------------------------------------------------------------\nSupplier Comment: \n-----------------------------------------------------------------------------------------------------------------------\nAccreditation Team Comment:",
+        "framework": "RCS",
+        "source": "spreadsheet"
+      },
+      {
+        "trudDocument": "ITK Distribution Envelope Requirements",
+        "id": "COR-DEH-07",
+        "area": "Distribution Envelope Header–General Requirements",
+        "title": "The “profileid” attribute of the Distribution Envelope Header “manifestitem” MUST be supplied, containing a version identifier for all configurable items within the message if specified for a particular service",
+        "description": "NB\nFor services for which ProfileID is defined, it MUST be populated consistently by a Toolkit Implementation when calling services. If use of the Profile ID is required for a service then details of the Profile ID will be specified separately as part of that service definition.\n\nRCS example:\n     <manifest count=\"1\">\n          <manifestitem id=\"uuid_7D6F23E0-AE1A-11DB-9808-B18E1E0994BB\" mimetype=\"text/xml\" profileid=\"urn:nhs-en:profile:nhs111RepeatCallerQuery-v1-0\"/>\n        </manifest>\n\n            <manifest count=\"1\">\n               <manifestitem id=\"uuid_47f5cfee-69e2-4e81-a196-5654b13840d6\" mimetype=\"text/xml\" profileid=\"urn:nhs-en:profile:nhs111CDADocument-v2-0\"/>\n            </manifest>",
+        "applicability": "Always applies to systems creating  the distribution envelope except for Infrastructure Acknowledgement and ADT",
+        "requirementType": "Must",
+        "guidance": "EVIDENCE: Execute all tests marked as \"applicable\"  after filters have been applied on the Testcases Index  tab. \n-----------------------------------------------------------------------------------------------------------------------\nSupplier Comment: \n-----------------------------------------------------------------------------------------------------------------------\nAccreditation Team Comment:",
+        "framework": "RCS",
+        "source": "spreadsheet"
+      }
+    ]
+  },
+  {
+    "id": "distribution-envelope-header-payload-requirements",
+    "title": "Distribution Envelope Header–Payload Requirements",
+    "framework": "RCS",
+    "status": "not-started",
+    "requirementCount": 2,
+    "mustCount": 2,
+    "shouldCount": 0,
+    "mayCount": 0,
+    "requirements": [
+      {
+        "trudDocument": "ITK Distribution Envelope Requirements",
+        "id": "COR-DEP-01",
+        "area": "Distribution Envelope Header–Payload Requirements",
+        "title": "The Distribution Envelope Payloads “count” attribute MUST be populated with the number of Payload elements contained",
+        "description": "RCS example:\n         </header>\n         <payloads count=\"1\">\n            <payload id=\"uuid_47f5cfee-69e2-4e81-a196-5654b13840d6\">",
+        "applicability": "Always applies to systems creating distribution envelope.",
+        "requirementType": "Must",
+        "guidance": "EVIDENCE: Execute all tests marked as \"applicable\"  after filters have been applied on the Testcases Index  tab. \n----------------------------------------------------------------------------------------------------------------------\nSupplier Comment: \n-----------------------------------------------------------------------------------------------------------------------\nAccreditation Team Comment:",
+        "framework": "RCS",
+        "source": "spreadsheet"
+      },
+      {
+        "trudDocument": "ITK Distribution Envelope Requirements",
+        "id": "COR-DEP-02",
+        "area": "Distribution Envelope Header–Payload Requirements",
+        "title": "Each Payload MUST have an “id” attribute which is unique within the message",
+        "description": "1\nWhile any form of payload id MAY be used, a uuid using upper-case hex prefix with “uuid_” is recommended, because the link between the manifest and payload ids is a case-sensitive string.",
+        "applicability": "Always applies to systems creating distribution envelope.",
+        "requirementType": "Must",
+        "guidance": "EVIDENCE: Execute all tests marked as \"applicable\"  after filters have been applied on the Testcases Index  tab. \n----------------------------------------------------------------------------------------------------------------------\nSupplier Comment: \n-----------------------------------------------------------------------------------------------------------------------\nAccreditation Team Comment:",
+        "framework": "RCS",
+        "source": "spreadsheet"
+      }
+    ]
+  },
+  {
+    "id": "reliability",
+    "title": "Reliability",
+    "framework": "RCS",
+    "status": "not-started",
+    "requirementCount": 2,
+    "mustCount": 1,
+    "shouldCount": 0,
+    "mayCount": 1,
+    "requirements": [
+      {
+        "trudDocument": "ITK Client, Host and ITK Middleware Requirements",
+        "id": "COR-REL-02",
+        "area": "Reliability",
+        "title": "Toolkit Implementations MAY retry if a transport response is not received",
+        "description": "NB\nThe lack of a transport-level response within any expected timeout period is an indication that the transport-level transmission may have failed. In these circumstances the sending Toolkit Implementation may retry if the underlying transport meaningfully allows it.",
+        "applicability": "Always applies to systems that send messages",
+        "requirementType": "May",
+        "guidance": "STATEMENT: A statement of compliance to simply confirm or otherwise that the requirement is met.\n\nEVIDENCE: Execute ER_INVTIM from the Testcases Detailed tab.\n-----------------------------------------------------------------------------------------------------------------------\nSupplier Comment: \n-----------------------------------------------------------------------------------------------------------------------\nAccreditation Team Comment:",
+        "framework": "RCS",
+        "source": "spreadsheet"
+      },
+      {
+        "trudDocument": "ITK Client, Host and ITK Middleware Requirements",
+        "id": "COR-REL-05",
+        "area": "Reliability",
+        "title": "Toolkit Implementations MUST provide details of how services handle, and recover from, transport failures during execution",
+        "description": "A service which does not complete before the invocation times out, may leave the requestor uncertain of the state of the request and its business data. Toolkit implementations must provide information as to how such cases are safely handled.",
+        "applicability": "Always applies to systems that send messages",
+        "requirementType": "Must",
+        "guidance": "STATEMENT: A statement of compliance simply explaining how service requests that fail to complete before invocation timeout are safely handled. \n\nEVIDENCE: Execute ER_INVTIM from the Testcases Detailed tab.\n-----------------------------------------------------------------------------------------------------------------------\nSupplier Comment: \n-----------------------------------------------------------------------------------------------------------------------\nAccreditation Team Comment:",
+        "framework": "RCS",
+        "source": "spreadsheet"
+      }
+    ]
+  },
+  {
+    "id": "supporting-infrastructure-logging",
+    "title": "Supporting Infrastructure - Logging",
+    "framework": "RCS",
+    "status": "not-started",
+    "requirementCount": 2,
+    "mustCount": 2,
+    "shouldCount": 0,
+    "mayCount": 0,
+    "requirements": [
+      {
+        "trudDocument": "ITK Client, Host and ITK Middleware Requirements",
+        "id": "IFC-LOG-01",
+        "area": "Supporting Infrastructure - Logging",
+        "title": "Toolkit Implementations MUST support configurable\ndiagnostic logging",
+        "description": "1\nToolkit implementations MUST provide diagnostic logging of messages and events.\n2\nToolkit implementations MUST provide a real time configurable control of logging, to allow the logging to be switch on during testing or troubleshooting.\n3\nToolkit implementations SHOULD provide the equivalent of configurable logging levels including but not limited to: Errors only – logs only errors - recording at least the message ids, message type, and timestamp in each case. This might typically be used in a mature and high volume production environment. Informational – logs message id, message type, timestamp, and limited additional information about each message. This might typically be used for troubleshooting in a production environment Full diagnostic – logs message id, message type, timestamp, plus full details of each message. This might typically be used in test environment, or in carefully controlled circumstances for troubleshooting in a production environment.\n4\nToolkit implementations MUST record the Tracking ID appearing in the Distribution Envelope, within the logs.",
+        "applicability": "Always applies",
+        "requirementType": "Must",
+        "guidance": "STATEMENT: A statement of compliance confirming that the product supports configurable diagnostic logging. The statement should state which of the logging levels referred to in the requirement are supported and confirm that the Tracking ID is included in the log for all levels.\n\nEVIDENCE:  Provide a sample log file showing Tracking ID for any of the tests executed.\n-----------------------------------------------------------------------------------------------------------------------\nSupplier Comment: \n-----------------------------------------------------------------------------------------------------------------------\nAccreditation Team Comment:",
+        "framework": "RCS",
+        "source": "spreadsheet"
+      },
+      {
+        "trudDocument": "ITK Client, Host and ITK Middleware Requirements",
+        "id": "IFC-LOG-02",
+        "area": "Supporting Infrastructure - Logging",
+        "title": "Toolkit Implementations MUST ensure Patient Identifiable data is adequately protected in log files and administrative tools",
+        "description": "",
+        "applicability": "Always applies",
+        "requirementType": "Must",
+        "guidance": "STATEMENT: A statement of compliance describing how Patient Identifiable data is protected at all times.\n-----------------------------------------------------------------------------------------------------------------------\nSupplier Comment: \n-----------------------------------------------------------------------------------------------------------------------\nAccreditation Team Comment:",
+        "framework": "RCS",
+        "source": "spreadsheet"
+      }
+    ]
+  },
+  {
+    "id": "supporting-infrastructure-alerting",
+    "title": "Supporting Infrastructure - Alerting",
+    "framework": "RCS",
+    "status": "not-started",
+    "requirementCount": 2,
+    "mustCount": 0,
+    "shouldCount": 2,
+    "mayCount": 0,
+    "requirements": [
+      {
+        "trudDocument": "ITK Client, Host and ITK Middleware Requirements",
+        "id": "IFC-ALT-01",
+        "area": "Supporting Infrastructure - Alerting",
+        "title": "Toolkit Implementations SHOULD allow technical alerts to be configured",
+        "description": "1\nToolkit implementations SHOULD allow alerts to be generated based on but not limited to sizes, message throughput, Error Store and throttling backlog.",
+        "applicability": "Always applies",
+        "requirementType": "Should",
+        "guidance": "STATEMENT: A statement of compliance describing how this requirement is satisfied. \n-----------------------------------------------------------------------------------------------------------------------\nSupplier Comment: \n-----------------------------------------------------------------------------------------------------------------------\nAccreditation Team Comment:",
+        "framework": "RCS",
+        "source": "spreadsheet"
+      },
+      {
+        "trudDocument": "ITK Client, Host and ITK Middleware Requirements",
+        "id": "IFC-ALT-02",
+        "area": "Supporting Infrastructure - Alerting",
+        "title": "Toolkit Implementations SHOULD support SNMP alerting",
+        "description": "1\nToolkit implementations SHOULD provide a SNMP alerting mechanism to Service Monitoring systems.\n2\nToolkit implementations SHOULD provide a SNMP interface for interrogation of counters and manipulation of configuration.\n\nAlerting may include email, webhooks to other monitoring and alerting systems.",
+        "applicability": "Always applies",
+        "requirementType": "Should",
+        "guidance": "STATEMENT: A statement of compliance describing how this requirement is satisfied. \n-----------------------------------------------------------------------------------------------------------------------\nSupplier Comment: \n-----------------------------------------------------------------------------------------------------------------------\nAccreditation Team Comment:",
+        "framework": "RCS",
+        "source": "spreadsheet"
+      }
+    ]
+  },
+  {
+    "id": "supporting-infrastructure-time",
+    "title": "Supporting Infrastructure - Time",
+    "framework": "RCS",
+    "status": "not-started",
+    "requirementCount": 3,
+    "mustCount": 3,
+    "shouldCount": 0,
+    "mayCount": 0,
+    "requirements": [
+      {
+        "trudDocument": "ITK Client, Host and ITK Middleware Requirements",
+        "id": "IFC-TIM-01",
+        "area": "Supporting Infrastructure - Time",
+        "title": "The Toolkit Implementation system clock MUST be synchronised with a consistent time source to within 250 milliseconds",
+        "description": "1\nToolkit implementations MUST use a NTP service that is consistent to within 250 milliseconds across the estate.\n2\nToolkit implementations SHOULD use a NTP service that is at least a Stratum 3 time source.\n3\nToolkit implementations SHOULD use a NTP service that returns Greenwich Mean Time (GMT), an equivalent of Coordinated Universal Time (UTC).",
+        "applicability": "Always applies",
+        "requirementType": "Must",
+        "guidance": "STATEMENT: A statement of compliance describing how this requirement is satisfied and confirming that the system clock is synchronised with a time source common to all systems connected to that Toolkit instance. \n-----------------------------------------------------------------------------------------------------------------------\nSupplier Comment: \n-----------------------------------------------------------------------------------------------------------------------\nAccreditation Team Comment:",
+        "framework": "RCS",
+        "source": "spreadsheet"
+      },
+      {
+        "trudDocument": "ITK Client, Host and ITK Middleware Requirements",
+        "id": "IFC-TIM-02",
+        "area": "Supporting Infrastructure - Time",
+        "title": "All timestamps generated by Toolkit Implementations MUST comply with issued guidance on time zones",
+        "description": "1\nToolkit implementations and their messages MUST comply with “NPFIT-FNT-TO-SCG-0005.14 – Clarification on Time Zone”",
+        "applicability": "Applies to systems that create Timestamps in Messages",
+        "requirementType": "Must",
+        "guidance": "STATEMENT: A statement of compliance confirming  that the document referenced in the requirement has been read and understood and that the requirements within it will be complied with in all deployments.\n-----------------------------------------------------------------------------------------------------------------------\nSupplier Comment: \n-----------------------------------------------------------------------------------------------------------------------\nAccreditation Team Comment:",
+        "framework": "RCS",
+        "source": "spreadsheet"
+      },
+      {
+        "trudDocument": "ITK Client, Host and ITK Middleware Requirements",
+        "id": "IFC-TIM-03",
+        "area": "Supporting Infrastructure - Time",
+        "title": "All timestamps displayed by Toolkit Implementations\nMUST comply with issued guidance on time zones",
+        "description": "",
+        "applicability": "Always applies",
+        "requirementType": "Must",
+        "guidance": "STATEMENT: A statement of compliance confirming  that the document referenced in the requirement has been read and understood and that the requirements within it will be complied with in all deployments.\n-----------------------------------------------------------------------------------------------------------------------\nSupplier Comment: \n-----------------------------------------------------------------------------------------------------------------------\nAccreditation Team Comment:",
+        "framework": "RCS",
+        "source": "spreadsheet"
+      }
+    ]
+  },
+  {
+    "id": "supporting-infrastructure-infrastructure-security",
+    "title": "Supporting Infrastructure -Infrastructure Security",
+    "framework": "RCS",
+    "status": "not-started",
+    "requirementCount": 2,
+    "mustCount": 2,
+    "shouldCount": 0,
+    "mayCount": 0,
+    "requirements": [
+      {
+        "trudDocument": "ITK Client, Host and ITK Middleware Requirements",
+        "id": "IFC-SEC-01",
+        "area": "Supporting Infrastructure -Infrastructure Security",
+        "title": "Toolkit Implementations MUST comply with standard HSCIC guidance for audit",
+        "description": "NB\nToolkit implementations MUST provide audit and alert in compliance with the CFH IG document “IG Audit & Alerts Gold Standard” document ref: NPFIT-FNT-TO-IG-PRJMGT-0093.05",
+        "applicability": "Always applies",
+        "requirementType": "Must",
+        "guidance": "STATEMENT : A  statement of compliance confirming  that the document referenced in the requirement has been read and understood and that the requirements within it will be complied with in all deployments.\n\nEVIDENCE:  Provide a sample Audit log file for any of the tests executed.\n-----------------------------------------------------------------------------------------------------------------------\nSupplier Comment: \n-----------------------------------------------------------------------------------------------------------------------\nAccreditation Team Comment:",
+        "framework": "RCS",
+        "source": "spreadsheet"
+      },
+      {
+        "trudDocument": "ITK Client, Host and ITK Middleware Requirements",
+        "id": "IFC-SEC-02",
+        "area": "Supporting Infrastructure -Infrastructure Security",
+        "title": "Toolkit Implementations  MUST comply with standard HSCIC guidance for infrastructure and data security",
+        "description": "1\nBased on the findings of a risk assessment the Toolkit Implementation MAY have to support disk encryption unless the risk assessment finds otherwise e.g. the Toolkit Implementation is not going to hold PID or is located in a secure data centre environment.\n2\nEncryption, if required SHOULD meet with the Information Security Teams Approved Cryptographic Algorithms\n3\nOther data security standards that MUST be adhered to are Disposal and Destruction of Sensitive Data\n4\nOther data security standards that MUST be adhered to are Secure Use of the N3 Network\nNB\nInformation Governance standards for systems for NHS and partner organisations are made available at http://systems.hscic.gov.uk/infogov",
+        "applicability": "Always applies",
+        "requirementType": "Must",
+        "guidance": "STATEMENT: A statement of compliance to confirm: \n(a) the documents have been read and understood, that the risk assessment has been performed, and that any of the subsequent requirements will be  complied with in all deployments. \n(b) The two data standards 'Disposal and Destruction of Sensitive Data' and 'Secure Use of the N3 Network' have been read and understoood, and will be complied with in all deployments.\n-----------------------------------------------------------------------------------------------------------------------\nSupplier Comment: \n-----------------------------------------------------------------------------------------------------------------------\nAccreditation Team Comment:",
+        "framework": "RCS",
+        "source": "spreadsheet"
+      }
+    ]
+  },
+  {
+    "id": "supporting-infrastructure-application-specific",
+    "title": "Supporting Infrastructure -Application Specific",
+    "framework": "RCS",
+    "status": "not-started",
+    "requirementCount": 2,
+    "mustCount": 2,
+    "shouldCount": 0,
+    "mayCount": 0,
+    "requirements": [
+      {
+        "trudDocument": "ITK Client, Host and ITK Middleware Requirements",
+        "id": "IFA-REL-02",
+        "area": "Supporting Infrastructure -Application Specific",
+        "title": "Toolkit Applications receiving error notifications MUST provide layered error handling to cover End-User, Automated, and Administrative error processing",
+        "description": "",
+        "applicability": "Applies to Client and Host applications that send messages.",
+        "requirementType": "Must",
+        "guidance": "STATEMENT: A statement of compliance explaining how the three categories are implemented when receiving an error message in response to a sent message.\n\nEVIDENCE:  Provide a screenshot showing an example to supplement the statement.\n-----------------------------------------------------------------------------------------------------------------------\nSupplier Comment: \n-----------------------------------------------------------------------------------------------------------------------\nAccreditation Team Comment:",
+        "framework": "RCS",
+        "source": "spreadsheet"
+      },
+      {
+        "trudDocument": "ITK Client, Host and ITK Middleware Requirements",
+        "id": "IFA-SEC-01",
+        "area": "Supporting Infrastructure -Application Specific",
+        "title": "Service Client Applications MUST take responsibility for end-user authentication, authorisation and audit",
+        "description": "1\nThe ITK Trust Operating Model document set provides more information about the process for determining what controls are required in a given situation.\nIn relation to Auditing, Toolkit Implementations - MUST maintain a log of auditable events including connections and requests for information both when successful and otherwise.\nSuch audit logs SHOULD record origin and other requestor identity, operation, and details such as patient identifier where available.\nNB\nNote: The Trust Operating Model documentation set provides more information about this process for determining what controls are required in a given situation.",
+        "applicability": "Applies to Client Applications",
+        "requirementType": "Must",
+        "guidance": "STATEMENT: Statement should confirm that  application is responsible for authentication, authorisation and audit of the end user.\n-----------------------------------------------------------------------------------------------------------------------\nSupplier Comment: \n-----------------------------------------------------------------------------------------------------------------------\nAccreditation Team Comment:",
+        "framework": "RCS",
+        "source": "spreadsheet"
+      }
+    ]
+  },
+  {
+    "id": "additional-modules-sequencing",
+    "title": "Additional Modules - Sequencing",
+    "framework": "RCS",
+    "status": "not-started",
+    "requirementCount": 1,
+    "mustCount": 0,
+    "shouldCount": 1,
+    "mayCount": 0,
+    "requirements": [
+      {
+        "trudDocument": "ITK Client, Host and ITK Middleware Requirements",
+        "id": "MOD-ASQ-02",
+        "area": "Additional Modules - Sequencing",
+        "title": "Client Applications SHOULD support insequence invocation of Toolkit services, where this is required",
+        "description": "1\nService Client Application SHOULD be able to preserve a technical FIFO sequence of events when placing outbound calls to the Toolkit.\n2\nThe implication of this FIFO processing is that the Service Client Application MUST await a successful SOAP response from one outbound call before placing the next one.\n3\nWhere it is provided then the use of FIFO processing SHOULD be configurable on/off to allow further implementation flexibility.\nTherefore this behaviour SHOULD only be provided by a Service Client Application for groups of Toolkit invocations where the sequencing is known to be significant.",
+        "applicability": "Applies to Client Applications",
+        "requirementType": "Should",
+        "guidance": "STATEMENT:  Statement should explain the significance of the sequence of events. If the sequence is significant it should further explain how the product is configured to meet this requirement.\n---------------------------------------------------------------------------------------------------------------------\nSupplier Comment: \n-----------------------------------------------------------------------------------------------------------------------\nAccreditation Team Comment:",
+        "framework": "RCS",
+        "source": "spreadsheet"
+      }
+    ]
+  },
+  {
+    "id": "additional-modules-information-governance-application-location-shielding",
+    "title": "Additional Modules - Information Governance - Application Location Shielding",
+    "framework": "RCS",
+    "status": "not-started",
+    "requirementCount": 3,
+    "mustCount": 2,
+    "shouldCount": 0,
+    "mayCount": 1,
+    "requirements": [
+      {
+        "trudDocument": "ITK Client, Host and ITK Middleware Requirements",
+        "id": "MOD-AIG-01",
+        "area": "Additional Modules - Information Governance - Application Location Shielding",
+        "title": "Toolkit Applications MUST provide capabilities to shield\npatient location details",
+        "description": "NB\nThis feature might be used, for example, to protect the location details of an abused spouse. It is intended to offer a reasonable but limited level of protection, while still allowing essential care processes to continue. For higher risk threats then alternative mechanisms are available and should be used - for example, a complete change of identity. The exact details of what constitutes “adequate” local shielding functionality cannot be prescribed here. Typically a shielding capability will involve blanking / obscuring / protecting location-related fields including: • Addresses • Telephone numbers • Email addresses • Next of kin details • GP details Note that this is not necessarily an exhaustive list. Typically a shielding capability will involve blanking / obscuring / protecting location-related fields including: • Addresses • Telephone numbers • Email addresses • Next of kin details • GP details Note that this is not necessarily an exhaustive list. Consideration should also be given protecting / deleting historical location details. Exactly what is appropriate in any given scenario is a local decision, based on weighing up the breadth of access to the application vs the benefits of enabling care processes to use the data vs the risks of exposure. Further guidance on making these local risk-management decisions is provided in the Toolkit Trust Operating Model.",
+        "applicability": "Always applies to Client and Host Applications",
+        "requirementType": "Must",
+        "guidance": "STATEMENT:  Statement should briefly explain the location shielding capabilities of the application.\n\n-----------------------------------------------------------------------------------------------------------------------\nSupplier Comment: \n-----------------------------------------------------------------------------------------------------------------------\nAccreditation Team Comment:",
+        "framework": "RCS",
+        "source": "spreadsheet"
+      },
+      {
+        "trudDocument": "ITK Client, Host and ITK Middleware Requirements",
+        "id": "MOD-AIG-02",
+        "area": "Additional Modules - Information Governance - Application Location Shielding",
+        "title": "Toolkit Applications MUST pass on knowledge of any\nshielding of patient location details",
+        "description": "1\n. Where a “shielding” feature as-per MOD-AIG-01 is offered then the application MUST pass on the value of this patient location “shielding” status in any Toolkit messages to other systems.",
+        "applicability": "Applies to  Applications that send demographic data",
+        "requirementType": "Must",
+        "guidance": "STATEMENT: Statement should detail how the requirement is met.\n-----------------------------------------------------------------------------------------------------------------------\nSupplier Comment: \n-----------------------------------------------------------------------------------------------------------------------\nAccreditation Team Comment:",
+        "framework": "RCS",
+        "source": "spreadsheet"
+      },
+      {
+        "trudDocument": "ITK Client, Host and ITK Middleware Requirements",
+        "id": "MOD-AIG-04",
+        "area": "Additional Modules - Information Governance - Application Location Shielding",
+        "title": "Toolkit Applications MAY allow shielded location details to leave the application",
+        "description": "NB\nIn general it is not necessary for a sending application to “blank out” location details for shielded patients before sending externally, e.g. to the Toolkit Middleware. This is because MOD-AIG-01 mandates that receiving applications will have the ability to appropriately protect shielded location details. This approach provides maximum flexibility for cases where a receiving application may need to make use of the demographic data for valid local processing. Despite the above, some Toolkit Applications may choose to use a number of means to provide additional “shielding” protection for location details before passing them via an interface.\nFor example: • Blanking fields • Writing a placeholder value in fields (e.g. “NOT AVAILABLE”) • Capturing pseudo values – for example the address of a friend who can forward post These measures do provide further “shielding” protection of the location details. However it should be noted that there is a disadvantage as this location information may in some circumstances be needed for valid processing in other local systems.",
+        "applicability": "Applies to Applications that send demographic data",
+        "requirementType": "May",
+        "guidance": "STATEMENT: Statement should detail how the requirement is met.\n-----------------------------------------------------------------------------------------------------------------------\nSupplier Comment: \n-----------------------------------------------------------------------------------------------------------------------\nAccreditation Team Comment:",
+        "framework": "RCS",
+        "source": "spreadsheet"
+      }
+    ]
+  },
+  {
+    "id": "additional-modules-information-governance-sealing",
+    "title": "Additional Modules - Information Governance - Sealing",
+    "framework": "RCS",
+    "status": "not-started",
+    "requirementCount": 1,
+    "mustCount": 1,
+    "shouldCount": 0,
+    "mayCount": 0,
+    "requirements": [
+      {
+        "trudDocument": "ITK Client, Host and ITK Middleware Requirements",
+        "id": "MOD-AIG-06",
+        "area": "Additional Modules - Information Governance - Sealing",
+        "title": "Toolkit Applications MUST NOT allow sealed data to leave the application",
+        "description": "1\nMany applications have an ability to flag certain items of clinical data as “sealed” or “sealed and locked”. This data MUST NOT be allowed to leave the application in any Toolkit messages. Note: Based on current IG policy, a dispensation on compliance with this requirement MAY be granted where it can be shown that BOTH (i) the patient has explicitly agreed to the sharing of sealed date AND (ii) the receiving application also has appropriate sealing mechanisms in place. This dispensation must be explicitly applied for on a case-by-case basis.",
+        "applicability": "Applies to Applications that send  clinical data",
+        "requirementType": "Must",
+        "guidance": "STATEMENT:  Statement should detail how the requirement is met.\n-----------------------------------------------------------------------------------------------------------------------\nSupplier Comment: \n-----------------------------------------------------------------------------------------------------------------------\nAccreditation Team Comment:",
+        "framework": "RCS",
+        "source": "spreadsheet"
+      }
+    ]
+  },
+  {
+    "id": "additional-modules-information-governance-application-cross-organisational-data-sharing",
+    "title": "Additional Modules - Information Governance -Application Cross Organisational Data Sharing",
+    "framework": "RCS",
+    "status": "not-started",
+    "requirementCount": 1,
+    "mustCount": 1,
+    "shouldCount": 0,
+    "mayCount": 0,
+    "requirements": [
+      {
+        "trudDocument": "ITK Client, Host and ITK Middleware Requirements",
+        "id": "MOD-AIG-08",
+        "area": "Additional Modules - Information Governance -Application Cross Organisational Data Sharing",
+        "title": "Toolkit Applications MUST ensure that the patient’s consent preferences are honoured when sharing Detailed Care Record information across organisational boundaries",
+        "description": "NB\nThere are several means by which Toolkit Applications may be involved in sharing Detailed Care Record (DCR) information across organisational boundaries. For example: \n• An application belonging to one organisation may receive data via a Toolkit interface from an application belonging to a different organisation\n• An application may present a user interface (e.g. web portal) that is accessible to users from other organisations \n• An application may have other (non-Toolkit) integrations that exchange data with applications belonging to other organisations\nIn all cases a Toolkit application must ensure that, prior to allowing sharing of Detailed Care Record information across organisational boundaries, the patient’s consent preferences are checked and the results of this check are recorded. If the patient expresses Dissent then the DCR information sharing must be blocked.\nThe preferred approach to performing this check is that an application should make use of the patient’s DCR Consent preferences as recorded by the PDS Consent flag. This is intended to be a National setting that is honoured by all applications.\nAlternatively, if access to the PDS Consent flag is not available, the application must offer an alternative approach. For example this might involve asking the patient directly, and recording their response. \nNote: Options for accessing the PDS Consent Flag include: \n1. Direct access to PDS by a PDS Compliant application \n2. Using a DCR consent flag contained in an incoming Toolkit message (subject to this being freshly populated, as described below) In all cases knowledge of the patient’s NHS Number will be needed to achieve this consent preferences lookup.\nNote: It is essential that a Toolkit Application works from an up-to-date value of the patient’s consent preferences – to ensure that the patient’s wishes are honoured and there are no loopholes due to time delays. Specifically, if the PDS Consent flag is used then its value must be freshly retrieved from PDS when needed and must not be locally cached beyond the current “session”. (“Session” would typically be defined as the logged on user’s session, however in non-interactive scenarios it might also be interpreted as a batch job, end-to-end message flow, or workflow instance). In addition, an application must ensure that any consent values populated into Toolkit messages are up-to-date, and not based on stale or cached data. Note: By default the responsibility is on the initiating application (ITK Client Application) which must ensure that the patient’s consent preferences are honoured. This responsibility may be relaxed only for specific circumstances where it can be clearly demonstrated that either the Toolkit Middleware or ITK Host Application(s) have alternative capabilities to\nensure that a consent check is done.",
+        "applicability": "Applies to Applications that send clinical  data",
+        "requirementType": "Must",
+        "guidance": "STATEMENT:  Statement should detail how the requirement is met.\n\n-----------------------------------------------------------------------------------------------------------------------\nSupplier Comment: \n-----------------------------------------------------------------------------------------------------------------------\nAccreditation Team Comment:",
+        "framework": "RCS",
+        "source": "spreadsheet"
+      }
+    ]
+  },
+  {
+    "id": "additional-modules-information-governance-nhs-number",
+    "title": "Additional Modules - Information Governance -NHS Number",
+    "framework": "RCS",
+    "status": "not-started",
+    "requirementCount": 1,
+    "mustCount": 1,
+    "shouldCount": 0,
+    "mayCount": 0,
+    "requirements": [
+      {
+        "trudDocument": "ITK Client, Host and ITK Middleware Requirements",
+        "id": "MOD-AIG-09",
+        "area": "Additional Modules - Information Governance -NHS Number",
+        "title": "Toolkit Applications sending patient data via the Toolkit interfaces MUST include the patient’s traced NHS Number as an identifier, if this is known",
+        "description": "NB\nThe NHS Number allows the patient to be identified on a National basis, and is thus important for enabling data sharing across organisational boundaries. Typically the message specifications will allow for multiple patient identifiers (including the NHS Number) to be included. This requirement therefore refines the message specification by stating that the traced NHS Number MUST be included as an identifier, if it is known. A traced NHS Number is the preferred patient identifier for interoperability within the NHS.\n1\nHowever, if only an unverified NHS Number is known, then this MAY be used if allowed by the Domain Message Specification being implemented.\n2\nSome Domain Message Specifications also allow a local identifier as a patient identifier. These SHOULD only be used where a traced NHS Number is not available.\n3\nLocal patient identifiers MUST always carry the assigning authority name (as laid out in the Domain Message Specification).",
+        "applicability": "Applies to Applications that send NHS number",
+        "requirementType": "Must",
+        "guidance": "STATEMENT:  Statement should confirm that either \na) the NHS Number is known and a trace has done to prove it is correct so it is included\nb) the NHS number is known but a trace cannot be done so it is not included\nc) the NHS number is not known so it is not included\n\nAny of the above should be marked as Compliant.\n-----------------------------------------------------------------------------------------------------------------------\nSupplier Comment: \n-----------------------------------------------------------------------------------------------------------------------\nAccreditation Team Comment:",
+        "framework": "RCS",
+        "source": "spreadsheet"
+      }
+    ]
+  },
+  {
+    "id": "client-accreditation-requirement",
+    "title": "Client Accreditation Requirement",
+    "framework": "RCS",
+    "status": "not-started",
+    "requirementCount": 1,
+    "mustCount": 1,
+    "shouldCount": 0,
+    "mayCount": 0,
+    "requirements": [
+      {
+        "trudDocument": "Accreditation",
+        "id": "ACC-MSG-01",
+        "area": "Client Accreditation Requirement",
+        "title": "Application Layer to Message Mapping",
+        "description": "Client suppliers must ensure that test messages created for the accreditation are suitably live like and exercise all appropriate message mappings which exist in a DMS.",
+        "applicability": "Applies to Client Applications",
+        "requirementType": "Must",
+        "guidance": "STATEMENT  Statement should simply confirm that the requirement is met.\n-----------------------------------------------------------------------------------------------------------------------\nSupplier Comment: \n-----------------------------------------------------------------------------------------------------------------------\nAccreditation Team Comment:",
+        "framework": "RCS",
+        "source": "spreadsheet"
+      }
+    ]
+  },
+  {
+    "id": "nhs-111",
+    "title": "NHS 111",
+    "framework": "RCS",
+    "status": "not-started",
+    "requirementCount": 1,
+    "mustCount": 1,
+    "shouldCount": 0,
+    "mayCount": 0,
+    "requirements": [
+      {
+        "trudDocument": "NHS111",
+        "id": "111-MA-01",
+        "area": "NHS 111",
+        "title": "The presented client and server TLS (mutually authenticated) X.509 certificates, the 'Subject field, CN='  MUST contain a Fully Qualified Domain Name in the format   “somenode.oneoneone.nhs.uk”",
+        "description": "Connecting 111 systems use certificate authentication at the TLS layer. Issuance of certificates is in accordance with the 111 PKI policy. All presented client and server TLS MA X.509 certificates, MUST contain with the 'Subject field, CN='   an FQDN in the format   “somenode.oneoneone.nhs.uk”",
+        "applicability": "Always applies for 111 bundles",
+        "requirementType": "Must",
+        "guidance": "STATEMENT: Statement should detail how this requirement is met.\n-----------------------------------------------------------------------------------------------------------------------\nSupplier Comment: \n-----------------------------------------------------------------------------------------------------------------------\nAccreditation Team Comment:",
+        "framework": "RCS",
+        "source": "spreadsheet"
+      }
+    ]
+  }
+]

@@ -10,8 +10,9 @@ import {
   formatReleaseText,
   flattenGroups,
 } from "./releaseNotesBuilder.js";
-
+import type { ReleaseTheme } from "../../models/releaseThemeModels.js";
 import type { ComponentGroup } from "./releaseNotesBuilder.js";
+import { adaptThemesToSections } from "./releaseThemeDocAdapter.js";
 
 function getSectionOrder(name: string): number {
   switch (name) {
@@ -107,6 +108,111 @@ export async function generateReleaseNotesDoc(
         text: formatReleaseText(i),
       })),
     }));
+
+  await generateFromTemplate(templatePath, outputPath, data, sections);
+
+  return outputPath;
+}
+
+export async function generateNarrativeReleaseNotesDoc(
+  narratives: any[],
+  templatePath: string,
+) {
+  const config = getConfig();
+  const docsDir = configAccess.getDocsReleaseDir();
+
+  fs.mkdirSync(docsDir, {
+    recursive: true,
+  });
+
+  const fileName = buildFileName(config, "release-notes.docx");
+  const outputPath = path.join(docsDir, fileName);
+
+  const data = {
+    BASE_URL: config.jira?.baseUrl,
+    TITLE: `${config.product.name} Release Notes`,
+    VERSION: config.release.version,
+    ENV: config.release.environment,
+    SUMMARY: `This release contains ${narratives.length} delivered change items.`,
+    HIGHLIGHTS: narratives
+      .slice(0, 5)
+      .map((n) => n.narrative)
+      .join("\n\n"),
+    FILENAME: fileName,
+    TEAM: config.owners?.qaTeam,
+    PRODUCT: config.product.name,
+    DOC_VERSION: `v${config.release.version}`,
+    OWNER: config.owners?.productOwner || "TBC",
+    DIRECTOR: config.owners?.director || "TBC",
+    AUTHORS: config.owners?.author || "TBC",
+    DATE: new Date().toLocaleDateString(),
+  };
+
+  const sections = [
+    {
+      title: "Stakeholder Narrative",
+
+      items: narratives.map((n) => ({
+        key: n.jiraKey,
+        text: n.narrative,
+      })),
+    },
+  ];
+
+  await generateFromTemplate(templatePath, outputPath, data, sections);
+
+  return outputPath;
+}
+export async function generateThemeReleaseNotesDoc(
+  themes: ReleaseTheme[],
+  templatePath: string,
+) {
+  const config = getConfig();
+
+  const docsDir = configAccess.getDocsReleaseDir();
+
+  fs.mkdirSync(docsDir, {
+    recursive: true,
+  });
+
+  const fileName = buildFileName(config, "release-notes.docx");
+
+  const outputPath = path.join(docsDir, fileName);
+
+  const data = {
+    BASE_URL: config.jira?.baseUrl,
+
+    TITLE: `${config.product.name} Release Notes`,
+
+    VERSION: config.release.version,
+
+    ENV: config.release.environment,
+
+    SUMMARY: `This release delivers ${themes.length} major areas of enhancement.`,
+
+    HIGHLIGHTS: themes
+      .slice(0, 5)
+      .map((t) => t.title)
+      .join("\n"),
+
+    FILENAME: fileName,
+
+    TEAM: config.owners?.qaTeam,
+
+    PRODUCT: config.product.name,
+
+    DOC_VERSION: `v${config.release.version}`,
+
+    OWNER: config.owners?.productOwner || "TBC",
+
+    DIRECTOR: config.owners?.director || "TBC",
+
+    AUTHORS: config.owners?.author || "TBC",
+
+    DATE: new Date().toLocaleDateString(),
+  };
+
+  const sections = adaptThemesToSections(themes);
 
   await generateFromTemplate(templatePath, outputPath, data, sections);
 

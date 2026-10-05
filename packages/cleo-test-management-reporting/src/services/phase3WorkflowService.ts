@@ -8,9 +8,9 @@ import { buildTestSummaryContext } from "./reportContextService.js";
 import {
   generateReleaseNotesFromVersion,
   generateReleaseNotesFromKeys,
+  generateReleaseNotesFromThemes,
 } from "../renderers/releaseNotes/releaseNotesService.js";
 import type { RuntimeContext } from "../models/runtimeContext.js";
-
 import type { PublishOptions } from "../models/publishOptions.js";
 
 export async function runPhase3Workflow(
@@ -39,7 +39,8 @@ export async function runPhase3Workflow(
   } else {
     console.log("📄 Generating Release Notes (version)...");
 
-    await generateReleaseNotesFromVersion(version);
+    //await generateReleaseNotesFromVersion(version);
+    await generateReleaseNotesFromThemes();
   }
 
   /* =========================
