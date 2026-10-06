@@ -1,6 +1,6 @@
-import type { AssuranceDocumentGroup } from "../models/assuranceDocumentGroupModels.js";
+import type { AssuranceDocumentGroup } from "../legacy/models/assuranceDocumentGroupModels.js";
 
-import type { AssuranceGroup } from "../models/assuranceGroupModels.js";
+import type { AssuranceGroup } from "../legacy/models/assuranceGroupModels.js";
 
 export function generateDocumentGroups(
   groups: AssuranceGroup[],

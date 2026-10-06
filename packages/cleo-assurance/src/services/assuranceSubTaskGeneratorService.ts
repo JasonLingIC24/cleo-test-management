@@ -1,33 +1,18 @@
-import type { AssuranceDocumentGroup } from "../models/assuranceDocumentGroupModels.js";
-
+import type { AssuranceFramework } from "../models/assuranceFrameworkModels.js";
+import type { AssuranceRequirement } from "../models/assuranceRequirementModels.js";
 import type { AssuranceSubTask } from "../models/assuranceSubTaskModels.js";
 
 export function generateAssuranceSubTasks(
-  documentGroups: AssuranceDocumentGroup[],
+  framework: AssuranceFramework,
 ): AssuranceSubTask[] {
-  return documentGroups.map((documentGroup) => {
-    const mustCount = documentGroup.groups.reduce(
-      (count, group) => count + group.mustCount,
-      0,
-    );
+  return framework.sections.map((section) => {
+    const areaSummary = section.subsections
+      .map((subsection) => {
+        const requirementList = buildRequirementHierarchy(
+          subsection.requirements,
+        );
 
-    const shouldCount = documentGroup.groups.reduce(
-      (count, group) => count + group.shouldCount,
-      0,
-    );
-
-    const mayCount = documentGroup.groups.reduce(
-      (count, group) => count + group.mayCount,
-      0,
-    );
-
-    const areaSummary = documentGroup.groups
-      .map((group) => {
-        const requirementList = group.requirements
-          .map((requirement) => `  - ${requirement.id} - ${requirement.title}`)
-          .join("\n");
-
-        return `${group.title}
+        return `${subsection.title}
 
 Requirements
 
@@ -35,24 +20,44 @@ ${requirementList}`;
       })
       .join("\n\n");
 
-    const areaCriteria = documentGroup.groups
+    const areaCriteria = section.subsections
       .map(
-        (group) =>
-          `- Review area '${group.title}' (${group.requirementCount} requirements)`,
+        (subsection) =>
+          `- Review area '${subsection.title}' (${
+            subsection.metrics?.requirementCount ??
+            subsection.requirements.length
+          } requirements)`,
       )
       .join("\n");
 
+    const metrics = section.metrics ?? {
+      requirementCount: section.subsections.reduce(
+        (count, subsection) => count + subsection.requirements.length,
+        0,
+      ),
+      mustCount: 0,
+      shouldCount: 0,
+      mayCount: 0,
+      completeCount: 0,
+      blockedCount: 0,
+      readinessPercent: 0,
+    };
+
     const acceptanceCriteria = [
-      `Review all ${documentGroup.requirementCount} requirements`,
-      `Assess all ${mustCount} MUST requirements`,
+      `Review all ${metrics.requirementCount} requirements`,
+      `Assess all ${metrics.mustCount} MUST requirements`,
     ];
 
-    if (shouldCount > 0) {
-      acceptanceCriteria.push(`Assess all ${shouldCount} SHOULD requirements`);
+    if (metrics.shouldCount > 0) {
+      acceptanceCriteria.push(
+        `Assess all ${metrics.shouldCount} SHOULD requirements`,
+      );
     }
 
-    if (mayCount > 0) {
-      acceptanceCriteria.push(`Review all ${mayCount} MAY requirements`);
+    if (metrics.mayCount > 0) {
+      acceptanceCriteria.push(
+        `Review all ${metrics.mayCount} MAY requirements`,
+      );
     }
 
     acceptanceCriteria.push(
@@ -69,19 +74,18 @@ ${requirementList}`;
       .join("\n");
 
     return {
-      summary: `PDS SCAL - ${documentGroup.title}`,
+      summary: `${framework.title} - ${section.title}`,
 
-      description: `TRUD Document
+      description: `Section
 
-${documentGroup.title}
+${section.title}
 
 Summary
 
-Requirements: ${documentGroup.requirementCount}
-Areas: ${documentGroup.groups.length}
-Must Requirements: ${mustCount}
-Should Requirements: ${shouldCount}
-May Requirements: ${mayCount}
+Requirements: ${metrics.requirementCount}
+Must Requirements: ${metrics.mustCount}
+Should Requirements: ${metrics.shouldCount}
+May Requirements: ${metrics.mayCount}
 
 Areas To Review
 
@@ -95,17 +99,57 @@ Acceptance Criteria
 
 ${acceptanceCriteriaText}`,
 
-      labels: ["assurance", "pds", "scal"],
+      labels: ["assurance"],
 
-      requirementCount: documentGroup.requirementCount,
+      requirementCount: metrics.requirementCount,
 
-      areaCount: documentGroup.groups.length,
+      areaCount: section.subsections.length,
 
-      mustCount,
+      mustCount: metrics.mustCount,
 
-      shouldCount,
+      shouldCount: metrics.shouldCount,
 
-      mayCount,
+      mayCount: metrics.mayCount,
     };
   });
+}
+
+function buildRequirementHierarchy(
+  requirements: AssuranceRequirement[],
+): string {
+  const requirementMap = new Map(
+    requirements.map((requirement) => [requirement.id, requirement]),
+  );
+
+  const rootRequirements = requirements.filter(
+    (requirement) => !requirement.parentRequirementId,
+  );
+
+  function renderRequirement(
+    requirement: AssuranceRequirement,
+    depth = 0,
+  ): string {
+    const indent = "  ".repeat(depth);
+
+    let output = `${indent}- ${requirement.id}`;
+
+    if (requirement.title) {
+      output += ` - ${requirement.title}`;
+    }
+
+    const children =
+      requirement.childRequirementIds
+        ?.map((childId) => requirementMap.get(childId))
+        .filter((child): child is AssuranceRequirement => Boolean(child)) ?? [];
+
+    for (const child of children) {
+      output += `\n${renderRequirement(child, depth + 1)}`;
+    }
+
+    return output;
+  }
+
+  return rootRequirements
+    .map((requirement) => renderRequirement(requirement))
+    .join("\n");
 }

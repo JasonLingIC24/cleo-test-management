@@ -1,15 +1,18 @@
 import { readFileSync, writeFileSync } from "node:fs";
 
-import type { AssuranceDocumentGroup } from "../models/assuranceDocumentGroupModels.js";
+import type { AssuranceFramework } from "../models/assuranceFrameworkModels.js";
 
 import { generateAssuranceSubTasks } from "../services/assuranceSubTaskGeneratorService.js";
 
-const documentGroups = JSON.parse(
-  readFileSync("./document-groups.json", "utf8"),
-) as AssuranceDocumentGroup[];
+const framework = JSON.parse(
+  readFileSync("./reports/assurance/framework.json", "utf8"),
+) as AssuranceFramework;
 
-const subTasks = generateAssuranceSubTasks(documentGroups);
+const subTasks = generateAssuranceSubTasks(framework);
 
-writeFileSync("./assurance-subtasks.json", JSON.stringify(subTasks, null, 2));
+writeFileSync(
+  "./reports/assurance/assurance-subtasks.json",
+  JSON.stringify(subTasks, null, 2),
+);
 
 console.log(`Generated ${subTasks.length} assurance subtasks`);

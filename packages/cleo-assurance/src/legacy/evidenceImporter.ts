@@ -1,4 +1,4 @@
-import type { AssuranceEvidenceDocument } from "../models/assuranceEvidenceDocumentModels.js";
+import type { AssuranceEvidenceDocument } from "./assuranceEvidenceDocumentModels.js";
 
 export async function importEvidence(
   evidenceDirectory: string,

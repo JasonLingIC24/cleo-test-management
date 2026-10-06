@@ -1,4 +1,4 @@
-import type { AssuranceRequirement } from "./assuranceRequirementModels.js";
+import type { AssuranceRequirement } from "../../models/assuranceRequirementModels.js";
 
 export type AssuranceGroupStatus =
   "not-started" | "in-progress" | "review" | "complete";

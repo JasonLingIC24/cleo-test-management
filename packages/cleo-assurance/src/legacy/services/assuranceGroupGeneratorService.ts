@@ -1,6 +1,6 @@
 import type { AssuranceRequirement } from "../models/assuranceRequirementModels.js";
 
-import type { AssuranceGroup } from "../models/assuranceGroupModels.js";
+import type { AssuranceGroup } from "../legacy/models/assuranceGroupModels.js";
 
 export function generateAssuranceGroups(
   requirements: AssuranceRequirement[],

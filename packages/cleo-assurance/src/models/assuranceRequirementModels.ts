@@ -5,6 +5,10 @@ export interface AssuranceRequirement {
 
   id: string;
 
+  parentRequirementId?: string;
+
+  childRequirementIds?: string[];
+
   area: string;
 
   title: string;
@@ -17,9 +21,11 @@ export interface AssuranceRequirement {
 
   guidance?: string;
 
+  status: AssuranceRequirementStatus;
+
+  evidenceIds: string[];
+
   framework: string;
 
   source: string;
-
-  status: AssuranceRequirementStatus;
 }

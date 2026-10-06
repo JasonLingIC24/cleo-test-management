@@ -2,7 +2,7 @@ import { readFileSync, writeFileSync } from "node:fs";
 
 import type { AssuranceGroup } from "../models/assuranceGroupModels.js";
 
-import { generateDocumentGroups } from "../services/assuranceDocumentGroupGeneratorService.js";
+import { generateDocumentGroups } from "./assuranceDocumentGroupGeneratorService.js";
 
 const groups = JSON.parse(
   readFileSync("./groups.json", "utf8"),

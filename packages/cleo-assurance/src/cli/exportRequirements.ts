@@ -1,6 +1,6 @@
 import { writeFileSync } from "node:fs";
 
-import { importScalSpreadsheet } from "../importers/scalSpreadsheetImporter.js";
+import { importScalSpreadsheet } from "../importers/requirementsSpreadsheetImporter.js";
 
 const document = await importScalSpreadsheet(
   "./requirements/rcs/itk-compliance-rcs-original.xlsx",

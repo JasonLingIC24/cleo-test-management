@@ -59,6 +59,8 @@ export async function importScalSpreadsheet(
 
       id: extractCellValue(row.getCell(2).value),
 
+      parentRequirementId: undefined,
+
       area: extractCellValue(row.getCell(3).value),
 
       title: extractCellValue(row.getCell(4).value),
@@ -72,6 +74,8 @@ export async function importScalSpreadsheet(
       guidance: extractCellValue(row.getCell(9).value),
 
       status: "not-started",
+
+      evidenceIds: [],
 
       framework: "RCS",
 

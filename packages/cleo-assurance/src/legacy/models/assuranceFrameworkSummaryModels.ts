@@ -5,5 +5,7 @@ export interface AssuranceFrameworkSummary {
 
   sectionCount: number;
 
+  subsectionCount: number;
+
   requirementCount: number;
 }
